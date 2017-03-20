@@ -461,7 +461,8 @@ PlayerSettings:
   XboxOneAllowedProductIds: []
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    UNet: 1
   cloudProjectId: 224d8a22-6ed2-406b-9c5a-ce1b914c4822
   projectName: SIulater
   organizationId: micramonyl
