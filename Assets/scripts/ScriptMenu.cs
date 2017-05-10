@@ -19,7 +19,7 @@ public class ScriptMenu : MonoBehaviour {
               buttonWidth,
               buttonHeight
             ),
-            "Start!"
+            "Jouer!"
           )
         )
         {
