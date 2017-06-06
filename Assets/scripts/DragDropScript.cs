@@ -4,38 +4,66 @@ using UnityEngine;
 
 public class DragDropScript : MonoBehaviour {
 
-    private Color mouseOverColor = Color.blue;
-    private Color originalColor = Color.yellow;
-    private bool dragging = false;
-    private float distance;
     private GameObject currentFather;
-
-    public void resetFather()
-    {
-        currentFather = GameObject.Find("Liste");
-        if (currentFather == null)
-        {
-            print("father not found");
-        }
-    }
-
-    public void setParent(GameObject p)
-    {
-        transform.SetParent(p.transform);
-    }
-
-    public void resetParent()
-    {
-        transform.SetParent(GameObject.Find("Liste").transform);
-    }
+    private GameObject defaultFather;
 
     private void Start()
     {
-        resetFather();
+        defaultFather = GameObject.Find("Liste");
+        currentFather = defaultFather;
+        if (defaultFather == null)
+        {
+            print("ERREUR DE L'ESPACE");
+        }
+        else
+        {
+            //print("trouvé");
+            BigBoxScript bbs = defaultFather.GetComponent<BigBoxScript>();
+            if (bbs == null)
+                print("error bbs null");
+            else
+                bbs.addItem(gameObject);
+
+        }
+       
+
+
     }
+
+    public void resetPosition()
+    {
+        currentFather = defaultFather;
+        BigBoxScript bbs = defaultFather.GetComponent<BigBoxScript>();
+        bbs.addItem(this.gameObject);
+
+    }
+    public float getHeight()
+    {
+        Collider2D coll = gameObject.GetComponent<Collider2D>();
+        if (coll == null)
+        {
+            print("error getting collider");
+            return (-1);
+        } else
+        {
+            return (coll.bounds.size.y);
+        }
+        
+    }
+
+    //public void setParent(GameObject p)
+    //{
+    //    transform.SetParent(p.transform);
+    //}
+
+    //public void resetParent()
+    //{
+    //    transform.SetParent(GameObject.Find("Liste").transform);
+    //}
+
     void OnTriggerEnter2D(Collider2D coll)
     {
-        print("inside");
+        //print("inside");
         if (coll.gameObject.GetComponent<BigBoxScript>() != null)
         {
             currentFather = coll.gameObject;
@@ -47,82 +75,65 @@ public class DragDropScript : MonoBehaviour {
 
     private void OnTriggerExit2D(Collider2D coll)
     {
-        print("outside");
+        //print("outside");
         if (coll.gameObject.GetComponent<BigBoxScript>() != null)
         {
-            resetFather();
+            currentFather = defaultFather;
         }
        
     }
 
-    void OnMouseEnter()
-    {
-        GetComponent<Renderer>().material.color = mouseOverColor;
-    }
 
-    void OnMouseExit()
-    {
-        GetComponent<Renderer>().material.color = originalColor;
-    }
+
+
+
+
+
+
 
     void OnMouseDown()
     {
         print("onmousedown !");
-        distance = Vector3.Distance(transform.position, Camera.main.transform.position);
-        resetParent();
-        dragging = true;
-        
+
+        BigBoxScript bbs = currentFather.GetComponent<BigBoxScript>();
+        bbs.removeItem(this.gameObject);
+
     }
 
 
-    public bool getDragging()
-    {
-        return dragging;
-    }
+
+
+
+
+
+
+
 
 
     void OnMouseUp()
     {
-        dragging = false;
         BigBoxScript bbs = currentFather.GetComponent<BigBoxScript>();
-        print("currentfather test");
         if (bbs == null)
         {
-            ListScript ls = currentFather.GetComponent<ListScript>();
-            print("list test");
-            if (ls == null)
-            {
-                print("error drop father bidule");
-            } else
-            {
-                ls.putInbox(this.gameObject);
-                print("list drop");
-            }
-            
-        }
-        else
+            print("erreur bbs=null");
+        } else
         {
-            if (bbs.getFree() == true)
-            {
-                bbs.putInBox(this.gameObject);
-            } else
-            {
-                resetFather();
-            }
-           
-
+            bbs.addItem(this.gameObject);
         }
-        
-        
     }
 
-    void Update()
+
+
+
+
+
+
+    private void OnMouseDrag()
     {
-        if (dragging)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Vector3 rayPoint = ray.GetPoint(distance);
-            transform.position = rayPoint;
-        }
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 rayPoint = ray.GetPoint(0);
+        transform.position = rayPoint;
     }
+
+
 }

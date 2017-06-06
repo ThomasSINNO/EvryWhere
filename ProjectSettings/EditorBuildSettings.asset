@@ -7,7 +7,21 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/scenes/Menu.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/scenes/couloir.unity
   - enabled: 1
     path: Assets/scenes/lift.unity
+  - enabled: 1
+    path: Assets/scenes/accueil.unity
+  - enabled: 1
+    path: Assets/scenes/couloir3.unity
+  - enabled: 1
+    path: Assets/scenes/couloir2.unity
+  - enabled: 1
+    path: Assets/scenes/couloir1.unity
+  - enabled: 1
+    path: Assets/scenes/salle1.unity
+  - enabled: 1
+    path: Assets/scenes/reunion1.unity
+  - enabled: 1
+    path: Assets/scenes/diagclasse1.unity
