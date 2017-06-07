@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ArrowHitbox
   - ArrowButton
+  - ParentBoxTag
   layers:
   - Default
   - TransparentFX

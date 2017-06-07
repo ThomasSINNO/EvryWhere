@@ -10,14 +10,14 @@ public class NameBoxScript : BigBoxScript {
 	// Use this for initialization
 	void Awake () {
         isFree = true;
-        print("awake nbs");
+
         nextPos = transform.position;
 	}
 
     private void Start()
     {
         isFree = true;
-        print("awake nbs");
+
         nextPos = transform.position;
     }
 

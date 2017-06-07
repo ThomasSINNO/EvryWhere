@@ -8,9 +8,41 @@ public class BigBoxScript : MonoBehaviour {
     protected Vector3 nextPos;
     float spacer;
 
+    public bool isCorrect(NameCorrectionStruct ncs)
+    {
+        if (ncs.table.Count != this.listItems.Count)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":WARNING:\n"
+           + "The correction for the body box doesn't have the right number of arguments:\n"
+           + "correct: " + ncs.table.Count + " / current: " + this.listItems.Count);
+            return false;
+        }
+        //get the names of all the things inside our big box and add them to a List that we'll sort:
+        List<string> names_currently_inside = new List<string>();
+        foreach (GameObject s in this.listItems)
+        {
+            names_currently_inside.Add(s.name);
+        }
+        // sort this list
+        names_currently_inside.Sort();
+        //check one by one the content
+        for (int i = 0; i < ncs.table.Count; i++)
+        {
+            print("-->comparing:" + names_currently_inside[i] + " and: " + ncs.table[i]);
+            if (!names_currently_inside[i].Equals(ncs.table[i]))
+                return false;
+        }
+        return true;
+    }
+
     public BigBoxScript()
     {
         listItems = new ArrayList();
+    }
+
+    public ArrayList getList()
+    {
+        return listItems;
     }
 
     private void Awake()
@@ -20,7 +52,7 @@ public class BigBoxScript : MonoBehaviour {
         nextPos = transform.position+new Vector3(0,y/2-0.3f,-1);
         listItems = new ArrayList();
         spacer = 0.0f;
-        print("awake bbs !");
+
 
     }
 

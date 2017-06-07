@@ -78,6 +78,11 @@
     <Compile Include="Assets\scripts\ArrowHitboxScript.cs" />
     <Compile Include="Assets\scripts\ArrowScript.cs" />
     <Compile Include="Assets\scripts\BigBoxScript.cs" />
+    <Compile Include="Assets\scripts\CorrectionLevels\level0.cs" />
+    <Compile Include="Assets\scripts\CorrectionScripts\ArrowCorrectionScript.cs" />
+    <Compile Include="Assets\scripts\CorrectionScripts\CorrectionContainer.cs" />
+    <Compile Include="Assets\scripts\CorrectionScripts\CorrectionManagerScript.cs" />
+    <Compile Include="Assets\scripts\CorrectionScripts\CorrectionOfParentBoxTagScript.cs" />
     <Compile Include="Assets\scripts\DragDropMulScript.cs" />
     <Compile Include="Assets\scripts\DragDropScript.cs" />
     <Compile Include="Assets\scripts\FlecheScript.cs" />

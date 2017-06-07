@@ -466,7 +466,7 @@ PlayerSettings:
     Collab: 0
     ErrorHub: 0
     Hub: 0
-    UNet: 0
+    UNet: 1
   cloudProjectId: 224d8a22-6ed2-406b-9c5a-ce1b914c4822
   projectName: SIulater
   organizationId: micramonyl
