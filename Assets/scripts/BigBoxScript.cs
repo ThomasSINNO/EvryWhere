@@ -31,9 +31,15 @@ public class BigBoxScript : MonoBehaviour {
         gobj.transform.position = nextPos;
 
         DragDropScript dds = gobj.GetComponent<DragDropScript>();
-        nextPos.y = nextPos.y - dds.getHeight() - spacer;
-        //gobj.transform.SetParent(this.transform);
-        //print("ajouté"+listItems.Count);
+        if (dds == null)
+        {
+            DragDropMulScript ddms = gobj.GetComponent<DragDropMulScript>();
+            nextPos.y = nextPos.y - ddms.getHeight() - spacer;
+        }
+        else
+        {
+            nextPos.y = nextPos.y - dds.getHeight() - spacer;
+        }
     }
 
     public virtual void removeItem(GameObject gobj)
@@ -43,8 +49,17 @@ public class BigBoxScript : MonoBehaviour {
             print("item not found in array");
         else
         {
+            float num = 0f;
             DragDropScript dds = gobj.GetComponent<DragDropScript>();
-            Vector3 removedheight = new Vector3(0, dds.getHeight()+spacer, 0);
+            if (dds == null)
+            {
+                DragDropMulScript ddms = gobj.GetComponent<DragDropMulScript>();
+                num = ddms.getHeight();
+            }else
+            {
+                num = dds.getHeight();
+            }
+            Vector3 removedheight = new Vector3(0, num+spacer, 0);
             listItems.RemoveAt(i);
             for (int j = i; j < listItems.Count; j++)
             {

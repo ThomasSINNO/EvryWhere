@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DragDropScript : MonoBehaviour {
 
-    private GameObject currentFather;
-    private GameObject defaultFather;
+    protected GameObject currentFather;
+    protected GameObject defaultFather;
 
     private void Start()
     {
@@ -51,16 +51,7 @@ public class DragDropScript : MonoBehaviour {
         
     }
 
-    //public void setParent(GameObject p)
-    //{
-    //    transform.SetParent(p.transform);
-    //}
-
-    //public void resetParent()
-    //{
-    //    transform.SetParent(GameObject.Find("Liste").transform);
-    //}
-
+   
     void OnTriggerEnter2D(Collider2D coll)
     {
         //print("inside");

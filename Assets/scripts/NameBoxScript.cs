@@ -14,6 +14,13 @@ public class NameBoxScript : BigBoxScript {
         nextPos = transform.position;
 	}
 
+    private void Start()
+    {
+        isFree = true;
+        print("awake nbs");
+        nextPos = transform.position;
+    }
+
     public override void addItem(GameObject gobj)
     {
         if (isFree)

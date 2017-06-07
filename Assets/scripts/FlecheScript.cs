@@ -88,6 +88,7 @@ public class FlecheScript : MonoBehaviour {
 
             GameObject newArrow = GameObject.Instantiate(arrow);
             print("instantiate arrow !");
+            newArrow.transform.position = new Vector3(0f, 0f, 0f);
 
             GameObject dep = newArrow.transform.Find("depart").gameObject;
             dep.transform.position = tab[0].transform.position;
