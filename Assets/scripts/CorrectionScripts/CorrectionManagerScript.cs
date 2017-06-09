@@ -65,8 +65,8 @@ public class CorrectionManagerScript : MonoBehaviour {
     public bool isCorrect()
     {
         bool r = (cc.table.Count > 0);
-
-        foreach (TagCorrectionsStruct tcs in cc.table)
+        CorrectionContainer cc_copy = new CorrectionContainer(cc);//copy because our functions are going to modify it !
+        foreach (TagCorrectionsStruct tcs in cc_copy.table)
         {
            r= r & isCorrectTag(tcs);
             if (!r)
@@ -78,24 +78,23 @@ public class CorrectionManagerScript : MonoBehaviour {
     }
 
 
-    private bool isCorrectTag(TagCorrectionsStruct tcs_)
+    private bool isCorrectTag(TagCorrectionsStruct tcs)
     {
 
         //stupid error checking
-        if (tcs_ == null|| tcs_.tag.Equals(""))
+        if (tcs == null|| tcs.tag.Equals(""))
         {
             print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
                     + "TagCorrectionStruct not set or has empty tag name");
             return false;
         }
-        else if(tcs_.is_correct)
+        else if(tcs.is_correct)
         {
             print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":WARNING/ERROR:\n"
-                                + "TagCorrectionStruct "+ tcs_.tag+" has already been completed => double !");
+                                + "TagCorrectionStruct "+ tcs.tag+" has already been completed => double !");
             return false;
         }
-        //start by copying the content of the struct because its is_correct fields are going to be changed in the process
-        TagCorrectionsStruct tcs = new TagCorrectionsStruct(tcs_);
+
         //search for our tagged name
         GameObject[] tagged_array=GameObject.FindGameObjectsWithTag(tcs.tag);
         if(tagged_array ==null)
@@ -117,11 +116,11 @@ public class CorrectionManagerScript : MonoBehaviour {
             }
             r = r & correction.isCorrect(tcs);// logical ANDing
 
-            print("current tagged object==>Is correct: " + (r ? "true" : "false"));
+            //print("current tagged object==>Is correct: " + (r ? "true" : "false"));
             if (r == false)//to skip the correction process of the rest of this tag
                 return false;
         }
-        print("TAG======>Is correct: " + (r ? "true" : "false"));
+        //print("TAG======>Is correct: " + (r ? "true" : "false"));
         if (r == true)
             tcs.is_correct = true;
        

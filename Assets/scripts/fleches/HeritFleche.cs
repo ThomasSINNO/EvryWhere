@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeritFleche : MonoBehaviour {
+public class HeritFleche : FlecheScript {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void Start()
+    {
+        isActive = false;
+        tab = new List<GameObject>();
+        arrow = GameObject.Find("Arrow");
+        type = typearrow.HERIT;
+        gameObject.tag = "ArrowButton";
+    }
 }

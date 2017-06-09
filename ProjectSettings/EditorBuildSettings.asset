@@ -25,3 +25,7 @@ EditorBuildSettings:
     path: Assets/scenes/reunion1.unity
   - enabled: 1
     path: Assets/scenes/diagclasse1.unity
+  - enabled: 1
+    path: Assets/scenes/bpmn1.unity
+  - enabled: 1
+    path: Assets/scenes/salle2.unity

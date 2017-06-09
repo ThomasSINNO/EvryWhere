@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompoFleche : MonoBehaviour {
+public class CompoFleche : FlecheScript {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void Start()
+    {
+        isActive = false;
+        tab = new List<GameObject>();
+        arrow = GameObject.Find("Arrow");
+        type = typearrow.COMPO;
+        gameObject.tag = "ArrowButton";
+    }
 }

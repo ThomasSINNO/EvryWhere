@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 
 
+interface IDeepCloneable
+{
+
+}
+
 
 public class CorrectionContainer
 {
@@ -18,7 +23,12 @@ public class CorrectionContainer
     {
         level_name = cc.level_name;
         is_correct = cc.is_correct;
-        table = new List<TagCorrectionsStruct>(cc.table);
+        table = new List<TagCorrectionsStruct>();
+        foreach(TagCorrectionsStruct tcs in cc.table)
+        {
+            table.Add(new TagCorrectionsStruct(tcs));
+        }
+
     }
 };
 public class TagCorrectionsStruct
@@ -37,8 +47,21 @@ public class TagCorrectionsStruct
     {
         tag = tcs.tag;
         is_correct = tcs.is_correct;
-        table = new List<LastLevelCorrectionStruct>(tcs.table);
+        table = new List<LastLevelCorrectionStruct>();
+
+        NameCorrectionStruct hotfix_ncs = new NameCorrectionStruct();
+        ArrowCorrectionStruct hotfix_acs = new ArrowCorrectionStruct();
+
+        foreach (LastLevelCorrectionStruct llcs in tcs.table)
+        {
+            //this is a very ugly hotfix
+            if(llcs.GetType().Equals(hotfix_ncs.GetType()))
+                table.Add(new NameCorrectionStruct( (NameCorrectionStruct)llcs));
+            else if (llcs.GetType().Equals(hotfix_acs.GetType()))
+                table.Add(new ArrowCorrectionStruct((ArrowCorrectionStruct)llcs));
+        }
     }
+
 };
 
 
@@ -59,7 +82,6 @@ public class LastLevelCorrectionStruct
         is_correct = llcs.is_correct;
     }
 
-
 };
 
 
@@ -72,9 +94,18 @@ public class NameCorrectionStruct : LastLevelCorrectionStruct
         table = new List<string>();
     }
 
+    protected virtual LastLevelCorrectionStruct CreateInstanceForClone()
+    {
+        return new NameCorrectionStruct();
+    }
+
     public NameCorrectionStruct(NameCorrectionStruct ncs) : base(ncs)
     {
-        table = new List<string>(ncs.table);
+        table = new List<string>();
+        foreach (string str in ncs.table)
+        {
+            table.Add(string.Copy(str) );
+        }
     }
 
 };
@@ -97,15 +128,15 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
         middle_link_to_arrow_end = "dummy_middle_link_to_arrow_end";
     }
 
-    public ArrowCorrectionStruct(ArrowCorrectionStruct ncs) : base(ncs)
+    public ArrowCorrectionStruct(ArrowCorrectionStruct acs) : base(acs)
     {
-        name_start = ncs.name_start;
-        name_end = ncs.name_end;
-        multiplicity_end = ncs.multiplicity_end;
-        multiplicity_start = ncs.multiplicity_start;
-        type_arrow = ncs.type_arrow;
-        middle_link_to_arrow_start = ncs.middle_link_to_arrow_start;
-        middle_link_to_arrow_end = ncs.middle_link_to_arrow_end;
+        name_start = acs.name_start;
+        name_end = acs.name_end;
+        multiplicity_end = acs.multiplicity_end;
+        multiplicity_start = acs.multiplicity_start;
+        type_arrow = acs.type_arrow;
+        middle_link_to_arrow_start = acs.middle_link_to_arrow_start;
+        middle_link_to_arrow_end = acs.middle_link_to_arrow_end;
     }
     public override bool Equals(object obj)
     {
@@ -124,5 +155,7 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
         else
             return true;
     }
+
+
 
 };
