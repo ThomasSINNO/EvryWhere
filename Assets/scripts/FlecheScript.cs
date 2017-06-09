@@ -4,7 +4,7 @@ using UnityEngine;
 
  public enum typearrow
 {
-    LINK,AGGREG,COMPO,ASSO,HERIT,UNDEF
+    LINK,AGGREG,COMPO,ASSO,HERIT,UNDEF,SUPPR
 };
 public class FlecheScript : MonoBehaviour {
 
@@ -74,7 +74,7 @@ public class FlecheScript : MonoBehaviour {
         isActive = false;
     }
 
-    
+
 
     public void EndArrow(GameObject g)
     {
@@ -83,36 +83,70 @@ public class FlecheScript : MonoBehaviour {
             print("g null");
         }
         tab.Add(g);
-        if (tab.Count > 1)
+        if (this.type == typearrow.SUPPR)
+        {
+            ArrowScript ars = tab[0].transform.parent.gameObject.GetComponent<ArrowScript>();
+            if (ars != null)
+            {
+                ars.deletearrow();
+                GameObject[] targets = getrects();
+                foreach (GameObject gobj in targets)
+                    gobj.GetComponent<ArrowHitboxScript>().Deactivate();
+                ResetArrow();
+
+            }
+        }
+        else
         {
 
-            GameObject newArrow = GameObject.Instantiate(arrow);
-            print("instantiate arrow !");
-            newArrow.transform.position = new Vector3(0f, 0f, 0f);
 
-            GameObject dep = newArrow.transform.Find("depart").gameObject;
-            dep.transform.position = tab[0].transform.position;
-            SpriteRenderer rend1 = dep.gameObject.GetComponent<SpriteRenderer>();
-            rend1.color = Color.green;
-            print("Instantiate dep !");
+            if (tab.Count > 1)
+            {
 
-            GameObject arr = newArrow.transform.Find("arrivee").gameObject;
-            arr.transform.position = tab[1].transform.position;
-            SpriteRenderer rend2 = arr.gameObject.GetComponent<SpriteRenderer>();
-            rend2.color = Color.blue;
+                GameObject newArrow = GameObject.Instantiate(arrow);
+                print("instantiate arrow !");
+                newArrow.transform.position = new Vector3(0f, 0f, 0f);
+                newArrow.GetComponent<ArrowScript>().setthings(this.type, tab[0], tab[1]);
 
-            GameObject mid = newArrow.transform.Find("milieu").gameObject;
-            float x = (dep.transform.position.x + arr.transform.position.x) / 2;
-            float y = (dep.transform.position.y + arr.transform.position.y) / 2;
-            float z = (dep.transform.position.z + arr.transform.position.z) / 2;
-            mid.transform.position = new Vector3(x, y, z);
-            SpriteRenderer rend3 = mid.gameObject.GetComponent<SpriteRenderer>();
-            rend3.color = Color.magenta;
+                GameObject dep = newArrow.transform.Find("depart").gameObject;
+                dep.transform.position = tab[0].transform.position;
+                SpriteRenderer rend1 = dep.gameObject.GetComponent<SpriteRenderer>();
+                rend1.color = Color.green;
+                print("Instantiate dep !");
 
-            GameObject[] targets = getrects();
-            foreach (GameObject gobj in targets)
+                GameObject arr = newArrow.transform.Find("arrivee").gameObject;
+                arr.transform.position = tab[1].transform.position;
+                SpriteRenderer rend2 = arr.gameObject.GetComponent<SpriteRenderer>();
+                if (newArrow.GetComponent<ArrowScript>().type == typearrow.AGGREG)
+                {
+                    rend2.color = Color.blue;
+                } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.ASSO)
+                {
+                    rend2.color = Color.black;
+                } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.COMPO)
+                {
+                    rend2.color = Color.cyan;
+                } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.HERIT)
+                {
+                    rend2.color = Color.gray;
+                } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.LINK)
+                {
+                    rend2.color = Color.yellow;
+                }
+
+                    GameObject mid = newArrow.transform.Find("milieu").gameObject;
+                float x = (dep.transform.position.x + arr.transform.position.x) / 2;
+                float y = (dep.transform.position.y + arr.transform.position.y) / 2;
+                float z = (dep.transform.position.z + arr.transform.position.z) / 2;
+                mid.transform.position = new Vector3(x, y, z);
+                SpriteRenderer rend3 = mid.gameObject.GetComponent<SpriteRenderer>();
+                rend3.color = Color.magenta;
+
+                GameObject[] targets = getrects();
+                foreach (GameObject gobj in targets)
                     gobj.GetComponent<ArrowHitboxScript>().Deactivate();
-            ResetArrow();
+                ResetArrow();
+            }
         }
         
     }

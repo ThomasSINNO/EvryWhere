@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ArrowScript : MonoBehaviour {
 
-    private typearrow type;
+    public typearrow type;
     private GameObject depart;
     private GameObject arrivee;
     private GameObject multdep;
@@ -24,6 +24,11 @@ public class ArrowScript : MonoBehaviour {
         type = t;
         depart = d;
         arrivee = a;
+    }
+
+    public void deletearrow()
+    {
+        Destroy(this.gameObject);
     }
 
 }
