@@ -70,7 +70,7 @@ public class FlecheScript : MonoBehaviour {
 
     public void ResetArrow()
     {
-        tab = new List<GameObject>();
+        tab.Clear();
         isActive = false;
     }
 
@@ -87,14 +87,48 @@ public class FlecheScript : MonoBehaviour {
         {
 
             GameObject newArrow = GameObject.Instantiate(arrow);
-            print("instantiate arrow !");
+            newArrow.tag = "ParentArrowTag";
+            //print("instantiate arrow !");
             newArrow.transform.position = new Vector3(0f, 0f, 0f);
+
+            ArrowScript arrow_script = newArrow.GetComponent<ArrowScript>();
+            if (arrow_script == null)
+            {
+                print("ERROR: the arrow (parent of depart and arrivee) doesn't have an arrowscript");
+                return;
+            }
+            //because the dep and arr are only the actual objects that are going to be placed at the end, not the clickable rectangles
+            // the clickables rectangles are inside tab, and we want their parent to find between wich box have they been drawn
+            GameObject true_start_point = tab[0].transform.parent.gameObject;
+            GameObject true_end_point = tab[1].transform.parent.gameObject;
+            arrow_script.setArrowProperties(type, true_start_point, true_end_point);
+            //check if the start/end point is an arrow
+            ArrowScript true_start_point_arrow_script = true_start_point.GetComponent<ArrowScript>();
+            ArrowScript true_end_point_arrow_script = true_end_point.GetComponent<ArrowScript>();
+
+            //check for a feature we don't support    
+            if (true_start_point_arrow_script != null && true_end_point_arrow_script != null)
+            {
+                print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+               + "Attaching an arrow between two arrows is not supported ");
+                //we delete the newly created arrow and we remove the boolean we set earlier
+                arrow_script.deleteArrow();
+                return;
+            }
+            if (true_start_point_arrow_script != null)
+                true_start_point_arrow_script.setMidPointAttached(true);
+            if (true_end_point_arrow_script != null)
+                true_end_point_arrow_script.setMidPointAttached(true);
+
+
+
+
 
             GameObject dep = newArrow.transform.Find("depart").gameObject;
             dep.transform.position = tab[0].transform.position;
             SpriteRenderer rend1 = dep.gameObject.GetComponent<SpriteRenderer>();
             rend1.color = Color.green;
-            print("Instantiate dep !");
+            // print("Instantiate dep !");
 
             GameObject arr = newArrow.transform.Find("arrivee").gameObject;
             arr.transform.position = tab[1].transform.position;
@@ -111,9 +145,11 @@ public class FlecheScript : MonoBehaviour {
 
             GameObject[] targets = getrects();
             foreach (GameObject gobj in targets)
-                    gobj.GetComponent<ArrowHitboxScript>().Deactivate();
+                gobj.GetComponent<ArrowHitboxScript>().Deactivate();
             ResetArrow();
         }
+        else
+            print("1st part added");
         
     }
     // Update is called once per frame

@@ -84,8 +84,6 @@ public class DragDropScript : MonoBehaviour {
 
     void OnMouseDown()
     {
-        print("onmousedown !");
-
         BigBoxScript bbs = currentFather.GetComponent<BigBoxScript>();
         bbs.removeItem(this.gameObject);
 

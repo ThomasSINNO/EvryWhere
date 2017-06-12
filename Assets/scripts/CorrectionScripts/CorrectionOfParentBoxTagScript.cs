@@ -4,35 +4,72 @@ using UnityEngine;
 
 public class CorrectionOfParentBoxTagScript : MonoBehaviour, CorrectionOfTagInterface
 {
+
+    public string getName()
+    {
+        string r = "";
+
+        NameBoxScript name_script = this.getNameBoxScript();
+        if (name_script == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                  + "The \"name\" child of CorrectionOfParentBoxTag doesn't have the right script attached");
+            return r;
+        }
+        //get the name of the namebox
+
+        return name_script.getName();
+
+    }
+
+    public List<string> getNamesInside()
+    {
+        List<string> r = new List<string>();
+        BigBoxScript body_script = getBigBoxScript();
+        if (body_script == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                  + "The \"body\" children of CorrectionOfParentBoxTag doesn't have the right script attached");
+            return r;
+        }
+        return body_script.getListAsNameList();
+    }
+
+    public BigBoxScript getBigBoxScript()
+    {
+        GameObject body_;
+        body_ = this.transform.Find("body").gameObject;
+        if (body_ == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                  + "The CorrectionOfParentBoxTag doesn't have a \"body\" child");
+            return null;
+        }
+        return body_.GetComponent<BigBoxScript>();
+    }
+
+
+    public NameBoxScript getNameBoxScript()
+    {
+        GameObject name_;
+        name_ = this.transform.Find("name").gameObject;
+        if (name_ == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                  + "The CorrectionOfParentBoxTag doesn't have a \"name\"child");
+            return null;
+        }
+        return name_.GetComponent<NameBoxScript>();
+    }
+
+
     public bool isCorrect(TagCorrectionsStruct tcs)
     {
         //start by checking the children and that they have the good type of scripts attached
-        GameObject name_, body_;
-        name_ = this.transform.Find("name").gameObject;
-        body_ = this.transform.Find("body").gameObject;
-        if (name_ == null || body_ == null)
-        {
-            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
-                  + "The CorrectionOfParentBoxTag doesn't have \"name\" and/or \"body\" child");
-            return false;
-        }
-        NameBoxScript name_script = name_.GetComponent<NameBoxScript>();
-        BigBoxScript body_script = body_.GetComponent<BigBoxScript>();
-        if (name_script == null || body_script == null)
-        {
-            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
-                  + "The \"name\" and/or \"body\" children of CorrectionOfParentBoxTag don't have the right script attached");
-            return false;
-        }
+
         //get the name of the namebox
-        ArrayList al = name_script.getList();
-        if (al.Count != 1 || ((GameObject)al[0]).name.Equals(""))
-        {
-            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
-                 + "The \"name\"child of CorrectionOfParentBoxTag doesn't has listItems.Count!=1");
-            return false;
-        }
-        string name_of_box = ((GameObject)al[0]).name;
+
+        string name_of_box = getName();
         //we find the corresponding name in the tcs
         LastLevelCorrectionStruct good_correction_container = null;
         foreach (LastLevelCorrectionStruct possible_correction_container in tcs.table)
@@ -59,6 +96,15 @@ public class CorrectionOfParentBoxTagScript : MonoBehaviour, CorrectionOfTagInte
         {
             print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":WARNING/ERROR:\n"
             + "The correction with name: " + name_of_box + " for the tag: " + tcs.tag + " has an empty correction table");
+            return false;
+        }
+
+        //get the big box script
+        BigBoxScript body_script = getBigBoxScript();
+        if (body_script == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                  + "The \"body\" children of CorrectionOfParentBoxTag doesn't have the right script attached");
             return false;
         }
 

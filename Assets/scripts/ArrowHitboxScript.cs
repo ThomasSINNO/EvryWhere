@@ -10,12 +10,13 @@ public class ArrowHitboxScript : MonoBehaviour {
 
     //private Color rouge = new Color(128, 0, 0, 1);
     // Use this for initialization
-    void Start () {
+    void Awake () {
         isActive = false;
         callingArrow = null;
         gameObject.tag = "ArrowHitbox";
         SpriteRenderer rend = this.gameObject.GetComponent<SpriteRenderer>();
         rend.color = Color.clear;
+        this.Deactivate();
     }
 
     public void Activate(GameObject g)
@@ -26,6 +27,7 @@ public class ArrowHitboxScript : MonoBehaviour {
         //Material newMaterial = new Material(Shader.Find("Whatever name of the shader you want to use"));
         SpriteRenderer rend = this.gameObject.GetComponent<SpriteRenderer>();
         rend.color = Color.red;
+        gameObject.layer = 0;//default layer to make it clickable again
     }
 
     public void Deactivate()
@@ -34,16 +36,19 @@ public class ArrowHitboxScript : MonoBehaviour {
         callingArrow = null;
         SpriteRenderer rend = this.gameObject.GetComponent<SpriteRenderer>();
         rend.color = Color.clear;
+        gameObject.layer = 2;//ignoreRaycast_layer to stop it from being clickable
     }
 
     public void OnMouseDown()
     {
+        if (callingArrow == null)
+            return;
         if (callingArrow.GetComponent < FlecheScript >()== null)
         {
             print("error find flechescript");
         }
         callingArrow.GetComponent<FlecheScript>().EndArrow(this.gameObject);
-        print("onmousedown arrowhitbox");
+        //print("onmousedown arrowhitbox");
     }
 
     //public void OnMouseUp()

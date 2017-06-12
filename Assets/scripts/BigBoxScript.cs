@@ -18,19 +18,18 @@ public class BigBoxScript : MonoBehaviour {
             return false;
         }
         //get the names of all the things inside our big box and add them to a List that we'll sort:
-        List<string> names_currently_inside = new List<string>();
-        foreach (GameObject s in this.listItems)
-        {
-            names_currently_inside.Add(s.name);
-        }
+        List<string> names_currently_inside = getListAsNameList();
         // sort this list
         names_currently_inside.Sort();
         //check one by one the content
         for (int i = 0; i < ncs.table.Count; i++)
         {
-            print("-->comparing:" + names_currently_inside[i] + " and: " + ncs.table[i]);
+            
             if (!names_currently_inside[i].Equals(ncs.table[i]))
+            {
+                print("--> failed comparing:" + names_currently_inside[i] + " and: " + ncs.table[i]);
                 return false;
+            }
         }
         return true;
     }
@@ -43,6 +42,16 @@ public class BigBoxScript : MonoBehaviour {
     public ArrayList getList()
     {
         return listItems;
+    }
+
+    public List<string> getListAsNameList()
+    {
+        List<string> names_currently_inside = new List<string>();
+        foreach (GameObject s in this.listItems)
+        {
+            names_currently_inside.Add(s.name);
+        }
+        return names_currently_inside;
     }
 
     private void Awake()
@@ -106,7 +115,7 @@ public class BigBoxScript : MonoBehaviour {
 
     void OnMouseDown()
     {
-        print("onmousedown bbs!");
+        //print("onmousedown bbs!");
        
     }
 }

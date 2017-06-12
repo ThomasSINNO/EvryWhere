@@ -15,6 +15,7 @@ public class CorrectionManagerScript : MonoBehaviour {
     void Awake()
     {
         cc = null;
+        print("CMS AWAKE!");
     }
 
     public bool loadCorrection(CorrectionContainer cc_)
@@ -26,7 +27,6 @@ public class CorrectionManagerScript : MonoBehaviour {
             return false;
         }
         cc = cc_;        
-        cc.table.Sort();
         //we have to sort the table of the NameCorrectionStruct which is located in the table of the tag ParentBoxTag
         //first we have to find this table with the tag ParentBoxTag
         foreach (TagCorrectionsStruct tcs in cc.table)
@@ -54,7 +54,7 @@ public class CorrectionManagerScript : MonoBehaviour {
                 break;
             }
         }
-        print("name=" + cc.level_name + " table.tag= " + cc.table[0].tag);
+        //  print("name=" + cc.level_name + " table.tag= " + cc.table[0].tag);
         return true;
     }
     public CorrectionContainer getCorrection()
@@ -64,9 +64,21 @@ public class CorrectionManagerScript : MonoBehaviour {
 
     public bool isCorrect()
     {
+        if(cc == null )
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                                   + "CC==null !!!");
+            return false;
+        }
+        if (cc.table == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                                   + "CC.table==null !!!");
+            return false;
+        }
         bool r = (cc.table.Count > 0);
-
-        foreach (TagCorrectionsStruct tcs in cc.table)
+        CorrectionContainer cc_copy = new CorrectionContainer(cc);//copy because our functions are going to modify it !
+        foreach (TagCorrectionsStruct tcs in cc_copy.table)
         {
            r= r & isCorrectTag(tcs);
             if (!r)
@@ -78,24 +90,23 @@ public class CorrectionManagerScript : MonoBehaviour {
     }
 
 
-    private bool isCorrectTag(TagCorrectionsStruct tcs_)
+    private bool isCorrectTag(TagCorrectionsStruct tcs)
     {
 
         //stupid error checking
-        if (tcs_ == null|| tcs_.tag.Equals(""))
+        if (tcs == null|| tcs.tag.Equals(""))
         {
             print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
                     + "TagCorrectionStruct not set or has empty tag name");
             return false;
         }
-        else if(tcs_.is_correct)
+        else if(tcs.is_correct)
         {
             print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":WARNING/ERROR:\n"
-                                + "TagCorrectionStruct "+ tcs_.tag+" has already been completed => double !");
+                                + "TagCorrectionStruct "+ tcs.tag+" has already been completed => double !");
             return false;
         }
-        //start by copying the content of the struct because its is_correct fields are going to be changed in the process
-        TagCorrectionsStruct tcs = new TagCorrectionsStruct(tcs_);
+
         //search for our tagged name
         GameObject[] tagged_array=GameObject.FindGameObjectsWithTag(tcs.tag);
         if(tagged_array ==null)
@@ -104,6 +115,14 @@ public class CorrectionManagerScript : MonoBehaviour {
                     + "No objects tagged with : "+ tcs.tag);
             return false;
         }
+
+        if (tagged_array.Length != tcs.table.Count)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
+                    + "For the tag: " + tcs.tag+" number of objects mismatch: currently:"+ tagged_array.Length+" needed:"+ tcs.table.Count);
+            return false;
+        }
+        //print("TAGGED LENGTH: " + tagged_array.Length);
         // we will pass to each object the struct will all the corrections for this type of tag and each will modify it (say if its content is ok)
         bool r = (tagged_array.Length>0);
         foreach (GameObject go in tagged_array)
@@ -117,11 +136,11 @@ public class CorrectionManagerScript : MonoBehaviour {
             }
             r = r & correction.isCorrect(tcs);// logical ANDing
 
-            print("current tagged object==>Is correct: " + (r ? "true" : "false"));
+            //print("current tagged object==>Is correct: " + (r ? "true" : "false"));
             if (r == false)//to skip the correction process of the rest of this tag
                 return false;
         }
-        print("TAG======>Is correct: " + (r ? "true" : "false"));
+        //print("TAG======>Is correct: " + (r ? "true" : "false"));
         if (r == true)
             tcs.is_correct = true;
        
