@@ -8,7 +8,7 @@ using UnityEngine;
 };
 public class FlecheScript : MonoBehaviour {
 
-
+    public Sprite spr;
     protected List<GameObject> tab;
     protected typearrow type;
 
@@ -70,7 +70,7 @@ public class FlecheScript : MonoBehaviour {
 
     public void ResetArrow()
     {
-        tab = new List<GameObject>();
+        tab.Clear();
         isActive = false;
     }
 
@@ -104,9 +104,37 @@ public class FlecheScript : MonoBehaviour {
             {
 
                 GameObject newArrow = GameObject.Instantiate(arrow);
-                print("instantiate arrow !");
+                newArrow.tag = "ParentArrowTag";
                 newArrow.transform.position = new Vector3(0f, 0f, 0f);
-                newArrow.GetComponent<ArrowScript>().setthings(this.type, tab[0], tab[1]);
+
+                ArrowScript arrow_script = newArrow.GetComponent<ArrowScript>();
+                if (arrow_script == null)
+                {
+                    print("ERROR: the arrow (parent of depart and arrivee) doesn't have an arrowscript");
+                    return;
+                }
+                arrow_script.setthings(this.type, tab[0], tab[1]);
+
+                GameObject true_start_point = tab[0].transform.parent.gameObject;
+                GameObject true_end_point = tab[1].transform.parent.gameObject;
+                arrow_script.setArrowProperties(type, true_start_point, true_end_point);
+                //check if the start/end point is an arrow
+                ArrowScript true_start_point_arrow_script = true_start_point.GetComponent<ArrowScript>();
+                ArrowScript true_end_point_arrow_script = true_end_point.GetComponent<ArrowScript>();
+
+                //check for a feature we don't support    
+                if (true_start_point_arrow_script != null && true_end_point_arrow_script != null)
+                {
+                    print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                   + "Attaching an arrow between two arrows is not supported ");
+                    //we delete the newly created arrow and we remove the boolean we set earlier
+                    arrow_script.deletearrow();
+                    return;
+                }
+                if (true_start_point_arrow_script != null)
+                    true_start_point_arrow_script.setMidPointAttached(true);
+                if (true_end_point_arrow_script != null)
+                    true_end_point_arrow_script.setMidPointAttached(true);
 
                 GameObject dep = newArrow.transform.Find("depart").gameObject;
                 dep.transform.position = tab[0].transform.position;
@@ -142,11 +170,21 @@ public class FlecheScript : MonoBehaviour {
                 SpriteRenderer rend3 = mid.gameObject.GetComponent<SpriteRenderer>();
                 rend3.color = Color.magenta;
 
+                GameObject line = newArrow.transform.Find("Line").gameObject;
+                LineRenderer l = line.GetComponent<LineRenderer>();
+                Vector3[] pos = { dep.transform.position+new Vector3(0,0,-5), arr.transform.position + new Vector3(0, 0, -5) };
+                l.SetPositions(pos);
+                Renderer rend = line.GetComponent<Renderer>();
+                rend.material.color = Color.black;
+                //rend.materials[0].mainTextureScale = new Vector3(Vector3.Distance(dep.transform.position, arr.transform.position), 0.5f, 0.5f);
+
                 GameObject[] targets = getrects();
                 foreach (GameObject gobj in targets)
                     gobj.GetComponent<ArrowHitboxScript>().Deactivate();
                 ResetArrow();
             }
+            else
+                print("1st part added");
         }
         
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AggregFleche : FlecheScript {
 
-	// Use this for initialization
+    
 	void Start () {
         isActive = false;
         tab = new List<GameObject>();

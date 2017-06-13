@@ -6,13 +6,26 @@ public class NameBoxScript : BigBoxScript {
 
     bool isFree;
 
+    public string getName()
+    {
+        List<string> l = this.getListAsNameList();
+        if (l.Count != 1)
+        {
+            //print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+            //   + "Their is not one and only one name inside this nameboxscript");
+            return "";
+        }
+        return l[0];
+    }
 
-	// Use this for initialization
-	void Awake () {
+
+    // Use this for initialization
+    void Awake () {
         isFree = true;
 
         nextPos = transform.position;
 	}
+
 
     private void Start()
     {

@@ -24,7 +24,7 @@ public class CorrectionContainer
         level_name = cc.level_name;
         is_correct = cc.is_correct;
         table = new List<TagCorrectionsStruct>();
-        foreach(TagCorrectionsStruct tcs in cc.table)
+        foreach (TagCorrectionsStruct tcs in cc.table)
         {
             table.Add(new TagCorrectionsStruct(tcs));
         }
@@ -55,8 +55,8 @@ public class TagCorrectionsStruct
         foreach (LastLevelCorrectionStruct llcs in tcs.table)
         {
             //this is a very ugly hotfix
-            if(llcs.GetType().Equals(hotfix_ncs.GetType()))
-                table.Add(new NameCorrectionStruct( (NameCorrectionStruct)llcs));
+            if (llcs.GetType().Equals(hotfix_ncs.GetType()))
+                table.Add(new NameCorrectionStruct((NameCorrectionStruct)llcs));
             else if (llcs.GetType().Equals(hotfix_acs.GetType()))
                 table.Add(new ArrowCorrectionStruct((ArrowCorrectionStruct)llcs));
         }
@@ -104,7 +104,7 @@ public class NameCorrectionStruct : LastLevelCorrectionStruct
         table = new List<string>();
         foreach (string str in ncs.table)
         {
-            table.Add(string.Copy(str) );
+            table.Add(string.Copy(str));
         }
     }
 
@@ -112,20 +112,43 @@ public class NameCorrectionStruct : LastLevelCorrectionStruct
 
 public class ArrowCorrectionStruct : LastLevelCorrectionStruct
 {
-  public  string name_start, name_end;
+    public static bool compareExactEquality(string a1, string a2, string b1, string b2)
+    {
+        return a1.Equals(a2) && b1.Equals(b2);
+    }
+    public static bool compareCrossedEquality(string a1, string a2, string b1, string b2)
+    {
+        return ((a1.Equals(a2) && b1.Equals(b2)) || (a1.Equals(b2) && b1.Equals(a2)));
+    }
+
+    public string name_start, name_end;
     public string multiplicity_start, multiplicity_end;
-    public string type_arrow;
-    public string middle_link_to_arrow_start, middle_link_to_arrow_end;
+    public typearrow type_arrow;
+    public string middle_link_to_arrow_start, middle_link_to_arrow_end;//one end of the arrow is pointing to a middle of another arrow 
+    public typearrow type_arrow_middle_link;
+    public string dump()
+    {
+        string r = "";
+        r += "name_start: " + name_start + "\n";
+        r += "name_end: " + name_end + "\n";
+        r += "multiplicity_start: " + multiplicity_start + "\n";
+        r += "multiplicity_end: " + multiplicity_end + "\n";
+        r += "middle_link_to_arrow_start: " + middle_link_to_arrow_start + "\n";
+        r += "middle_link_to_arrow_end: " + middle_link_to_arrow_end + "\n";
+        return r;
+    }
+
 
     public ArrowCorrectionStruct() : base()
     {
-        name_start = "dummy_start_name";
-        name_end = "dummy_name_end";
-        multiplicity_start = "dummy_multiplicity_start";
-        multiplicity_end = "dummy_multiplicity_end";
-        type_arrow = "dummy_type_arrow";
-        middle_link_to_arrow_start = "dummy_middle_link_to_arrow_start";
-        middle_link_to_arrow_end = "dummy_middle_link_to_arrow_end";
+        name_start = "";
+        name_end = "";
+        multiplicity_start = "";
+        multiplicity_end = "";
+        type_arrow = typearrow.UNDEF;
+        type_arrow_middle_link = typearrow.UNDEF;
+        middle_link_to_arrow_start = "";
+        middle_link_to_arrow_end = "";
     }
 
     public ArrowCorrectionStruct(ArrowCorrectionStruct acs) : base(acs)
@@ -138,22 +161,65 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
         middle_link_to_arrow_start = acs.middle_link_to_arrow_start;
         middle_link_to_arrow_end = acs.middle_link_to_arrow_end;
     }
+
+    //ends_false__true_middle ===> put to false if want to compare the direct ends, true if want to compare the ends linked by the middle of another arrow
+    public bool compareEndsBasedOnType(bool ends_false__true_middle, ArrowCorrectionStruct acs)
+    {
+        string a1, a2, b1, b2;
+        typearrow type_our_selection;
+        if (ends_false__true_middle)
+        {
+            a1 = name_start;
+            a2 = acs.name_start;
+            b1 = name_end;
+            b2 = acs.name_end;
+            type_our_selection = this.type_arrow_middle_link;
+        }
+        else
+        {
+            a1 = multiplicity_start;
+            a2 = acs.multiplicity_start;
+            b1 = multiplicity_end;
+            b2 = acs.multiplicity_end;
+            type_our_selection = this.type_arrow;
+        }
+        //depending on the type sometimes the start/end choice does not matter since it's not really an arrow but a bidirectional line
+        if (type_our_selection == typearrow.LINK || type_our_selection == typearrow.UNDEF || type_our_selection == typearrow.ASSO)
+        {
+            if (!compareCrossedEquality(a1, a2, b1, b2))
+                return false;
+        }
+        else
+        {
+            if (!compareExactEquality(a1, a2, b1, b2))
+                return false;
+        }
+        return true;
+
+
+    }
+
     public override bool Equals(object obj)
     {
         if (obj.GetType() != this.GetType())
             return false;
-        ArrowCorrectionStruct acs = (ArrowCorrectionStruct) obj;
-        if (!name_start.Equals(acs.name_start)
-               || !name_end.Equals(acs.name_end)
-               || !multiplicity_end.Equals(acs.multiplicity_end)
+
+        ArrowCorrectionStruct acs = (ArrowCorrectionStruct)obj;
+        if (!multiplicity_end.Equals(acs.multiplicity_end)
                || !multiplicity_start.Equals(acs.multiplicity_start)
                || !type_arrow.Equals(acs.type_arrow)
-               || !middle_link_to_arrow_start.Equals(acs.middle_link_to_arrow_start)
-               || !middle_link_to_arrow_end.Equals(acs.middle_link_to_arrow_end)
            )
             return false;
-        else
-            return true;
+
+        //depending on the type sometimes the start/end choice does not matter since it's not really an arrow but a bidirectional line
+        //start by comparing the direct ends
+        if (!compareEndsBasedOnType(false, acs))
+            return false;
+        //then the remote ends if they exist
+        if (!compareEndsBasedOnType(true, acs))
+            return false;
+
+        return true;
     }
 
 

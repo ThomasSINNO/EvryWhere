@@ -2,34 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrowCorrectionScript : MonoBehaviour {
-
-    public bool isCorrect(ArrowCorrectionStruct acs)
+public class ArrowCorrectionScript : MonoBehaviour, CorrectionOfTagInterface
+{
+    protected bool isCorrect(ArrowCorrectionStruct acs)
     {
-        //let's get our children
-        GameObject start, middle, end;
-        start = this.transform.Find("depart").gameObject;
-        middle = this.transform.Find("milieu").gameObject;
-        end = this.transform.Find("arrivee").gameObject;
-        if (start == null || middle == null || end == null)
+        //let's get all our argument arguments
+        ArrowScript AS = this.gameObject.GetComponent<ArrowScript>();
+        if (AS == null)
         {
             print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
-                  + "The ArrowCorrectionScript doesn't have \"depart\" and/or \"milieu\" and/or \"arrivee\" child");
+           + "the arrow doesn't have an ArrowScript attached to get the values we need");
             return false;
         }
-        //then their scripts
-
-
-        //let's get all the arguments
-        ArrowCorrectionStruct current_args = new ArrowCorrectionStruct();
-        current_args.name_start ="";
-        current_args.name_end ="";
-        current_args.type_arrow = "";
-        current_args.multiplicity_end ="";
-        current_args.multiplicity_start ="";
-        current_args.middle_link_to_arrow_end ="";
-        current_args.middle_link_to_arrow_start = "";
-
+        ArrowCorrectionStruct current_args = AS.getCorrectionStruct();
+        //print("Comparing:\n->Mine:\n" + current_args.dump()+"AND:\n->Correction\n"+acs.dump());
         return current_args.Equals(acs);
+    }
+
+    public bool isCorrect(TagCorrectionsStruct tcs)
+    {
+        ArrowScript AS = this.gameObject.GetComponent<ArrowScript>();
+        if (AS == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+           + "the arrow doesn't have an ArrowScript attached to get the values we need");
+            return false;
+        }
+        foreach (LastLevelCorrectionStruct llcs in tcs.table)
+        {
+            if (!llcs.is_correct)
+            {
+                ArrowCorrectionStruct acs = (ArrowCorrectionStruct)llcs;
+                if (isCorrect(acs))
+                {
+                    acs.is_correct = true;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
