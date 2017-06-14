@@ -373,7 +373,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2025896219}
   - component: {fileID: 2025896218}
-  - component: {fileID: 2025896217}
   - component: {fileID: 2025896220}
   m_Layer: 0
   m_Name: meetingdoor
@@ -382,17 +381,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2025896217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2025896216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c302c6c37b15fe469f97ef6d518bfc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &2025896218
 BoxCollider2D:
   m_ObjectHideFlags: 0

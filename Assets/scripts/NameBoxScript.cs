@@ -6,6 +6,7 @@ public class NameBoxScript : BigBoxScript {
 
     bool isFree;
 
+
     public string getName()
     {
         List<string> l = this.getListAsNameList();
@@ -46,7 +47,21 @@ public class NameBoxScript : BigBoxScript {
         {
             GameObject i = (GameObject)listItems[0];
             base.removeItem(i);
-            i.GetComponent<DragDropScript>().resetPosition();
+            DragDropScript dds = i.GetComponent<DragDropScript>();
+            if (!dds)
+            {
+                DragDropMulScript ddms = i.GetComponent<DragDropMulScript>();
+                if (!ddms)
+                {
+                    print("erreur getcomponent");
+                } else
+                {
+                    ddms.resetPosition();
+                }
+            } else
+            {
+                dds.resetPosition();
+            }
             base.addItem(gobj);
         }
     }

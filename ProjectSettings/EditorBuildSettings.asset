@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/scenes/couloir1.unity
   - enabled: 1
     path: Assets/scenes/salle1.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/scenes/reunion1.unity
   - enabled: 1
     path: Assets/scenes/diagclasse1.unity
@@ -29,3 +29,9 @@ EditorBuildSettings:
     path: Assets/scenes/bpmn1.unity
   - enabled: 1
     path: Assets/scenes/salle2.unity
+  - enabled: 1
+    path: Assets/scenes/reunion1_2.unity
+  - enabled: 1
+    path: Assets/scenes/reunion1_1.unity
+  - enabled: 1
+    path: Assets/scenes/reunion2_1.unity

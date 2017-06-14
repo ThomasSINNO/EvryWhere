@@ -10,7 +10,7 @@ public class FlecheScript : MonoBehaviour {
 
     public Sprite spr;
     protected List<GameObject> tab;
-    protected typearrow type;
+    public typearrow type;
 
     protected bool isActive;
 
@@ -20,7 +20,6 @@ public class FlecheScript : MonoBehaviour {
         isActive = false;
         tab = new List<GameObject>();
         arrow = GameObject.Find("Arrow");
-        type = typearrow.UNDEF;
         gameObject.tag = "ArrowButton";
     }
 
@@ -117,6 +116,7 @@ public class FlecheScript : MonoBehaviour {
 
                 GameObject true_start_point = tab[0].transform.parent.gameObject;
                 GameObject true_end_point = tab[1].transform.parent.gameObject;
+                arrow_script.type = this.type;
                 arrow_script.setArrowProperties(type, true_start_point, true_end_point);
                 //check if the start/end point is an arrow
                 ArrowScript true_start_point_arrow_script = true_start_point.GetComponent<ArrowScript>();
@@ -137,29 +137,29 @@ public class FlecheScript : MonoBehaviour {
                     true_end_point_arrow_script.setMidPointAttached(true);
 
                 GameObject dep = newArrow.transform.Find("depart").gameObject;
-                dep.transform.position = tab[0].transform.position;
+                dep.transform.position = tab[0].transform.position+new Vector3(0,0,-3);
                 SpriteRenderer rend1 = dep.gameObject.GetComponent<SpriteRenderer>();
-                rend1.color = Color.green;
-                print("Instantiate dep !");
+                rend1.color = Color.clear;
+                //print("Instantiate dep !");
 
                 GameObject arr = newArrow.transform.Find("arrivee").gameObject;
-                arr.transform.position = tab[1].transform.position;
+                arr.transform.position = tab[1].transform.position+new Vector3(0, 0, -3);
                 SpriteRenderer rend2 = arr.gameObject.GetComponent<SpriteRenderer>();
                 if (newArrow.GetComponent<ArrowScript>().type == typearrow.AGGREG)
                 {
-                    rend2.color = Color.blue;
+                    rend2.sprite = spr;
                 } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.ASSO)
                 {
-                    rend2.color = Color.black;
+                    rend2.color = Color.clear;
                 } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.COMPO)
                 {
-                    rend2.color = Color.cyan;
+                    rend2.sprite=spr;
                 } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.HERIT)
                 {
-                    rend2.color = Color.gray;
+                    rend2.sprite=spr;
                 } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.LINK)
                 {
-                    rend2.color = Color.yellow;
+                    rend2.color = Color.clear;
                 }
 
                     GameObject mid = newArrow.transform.Find("milieu").gameObject;
@@ -168,15 +168,21 @@ public class FlecheScript : MonoBehaviour {
                 float z = (dep.transform.position.z + arr.transform.position.z) / 2;
                 mid.transform.position = new Vector3(x, y, z);
                 SpriteRenderer rend3 = mid.gameObject.GetComponent<SpriteRenderer>();
-                rend3.color = Color.magenta;
 
                 GameObject line = newArrow.transform.Find("Line").gameObject;
                 LineRenderer l = line.GetComponent<LineRenderer>();
                 Vector3[] pos = { dep.transform.position+new Vector3(0,0,-5), arr.transform.position + new Vector3(0, 0, -5) };
                 l.SetPositions(pos);
                 Renderer rend = line.GetComponent<Renderer>();
-                rend.material.color = Color.black;
-                //rend.materials[0].mainTextureScale = new Vector3(Vector3.Distance(dep.transform.position, arr.transform.position), 0.5f, 0.5f);
+                if (newArrow.GetComponent<ArrowScript>().type == typearrow.ASSO)
+                {
+                    rend.material.color = Color.red;
+                }
+                else
+                {
+                    //rend.material.color = Color.black;
+                }
+                
 
                 GameObject[] targets = getrects();
                 foreach (GameObject gobj in targets)

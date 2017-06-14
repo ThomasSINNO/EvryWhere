@@ -10,12 +10,6 @@ public class dialogscript : MonoBehaviour {
     public int size;
 
     void Start () {
-        //listspr[0] = Resources.Load("dialogs/bulle1") as Sprite;
-        //listspr[1] = Resources.Load<Sprite>("dialogs/bulle2");
-        //listspr[2] = Resources.Load<Sprite>("dialogs/bulle3");
-        //listspr[3] = Resources.Load<Sprite>("dialogs/bulle4");
-        //listspr[4] = Resources.Load<Sprite>("dialogs/bulle5");
-
         sprr = this.gameObject.GetComponent<SpriteRenderer>();
         sprr.sprite = listspr[0];
         i = 0;

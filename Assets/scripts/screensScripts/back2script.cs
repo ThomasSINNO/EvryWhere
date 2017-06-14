@@ -27,7 +27,7 @@ public class back2script : MonoBehaviour
         {
             // Sur le clic, on démarre le premier niveau
             // "Stage1" est le nom de la première scène que nous avons créés.
-            SceneManager.LoadScene("couloir1");
+            SceneManager.LoadScene("couloir2");
         }
     }
 }

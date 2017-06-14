@@ -115,7 +115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 61464581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d82689d1023f3d2458b7d6e44bd60fc2, type: 3}
+  m_Script: {fileID: 11500000, guid: a3749f26dea676d42af99cf1a3f08158, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &61464583
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 592479838}
   - component: {fileID: 592479841}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: dialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,9 +161,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listspr:
-  - {fileID: 21300000, guid: 7dd3492a43316a547a4baa84df62c0d0, type: 3}
-  - {fileID: 21300000, guid: 0aed9377745a5cf45b6ab8e86e2916e2, type: 3}
-  size: 2
+  - {fileID: 21300000, guid: 4e1b65664987e2b4e96abc51b183bacd, type: 3}
+  - {fileID: 21300000, guid: 0e3b45389b54de84092896e58a7b880d, type: 3}
+  - {fileID: 21300000, guid: fd807633811aca14fb4932afcb761378, type: 3}
+  size: 3
 --- !u!212 &592479839
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -195,7 +196,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7dd3492a43316a547a4baa84df62c0d0, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

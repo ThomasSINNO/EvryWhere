@@ -117,7 +117,7 @@ public class CorrectionManagerScript : MonoBehaviour
             return false;
         }
 
-        if (tagged_array.Length != tcs.table.Count)
+        if (tagged_array.Length != tcs.table.Count+1)
         {
             print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
                     + "For the tag: " + tcs.tag + " number of objects mismatch: currently:" + tagged_array.Length + " needed:" + tcs.table.Count);

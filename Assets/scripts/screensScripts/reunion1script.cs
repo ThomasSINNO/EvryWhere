@@ -5,8 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class reunion1script : MonoBehaviour {
 
+    public static bool haspassedumllvl1 = false;
     private void OnMouseDown()
     {
-        SceneManager.LoadScene("reunion1");
+        if (haspassedumllvl1)
+        {
+            SceneManager.LoadScene("reunion1_2");
+        } else
+        {
+            SceneManager.LoadScene("reunion1_1");
+        }
     }
 }

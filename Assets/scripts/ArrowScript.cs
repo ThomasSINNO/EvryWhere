@@ -129,9 +129,9 @@ public class ArrowScript : MonoBehaviour {
 
     public void setthings(typearrow t,GameObject d,GameObject a)
     {
-        type = t;
-        depart = d;
-        arrivee = a;
+        this.type = t;
+        this.depart = d;
+        this.arrivee = a;
     }
 
     public void setMidPointAttached(bool b)

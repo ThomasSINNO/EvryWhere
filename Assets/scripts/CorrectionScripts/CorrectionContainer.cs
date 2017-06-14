@@ -205,12 +205,17 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
             return false;
 
         ArrowCorrectionStruct acs = (ArrowCorrectionStruct)obj;
+        //if (!multiplicity_end.Equals(acs.multiplicity_end)
+        //       || !multiplicity_start.Equals(acs.multiplicity_start)
+        //      // || !type_arrow.Equals(acs.type_arrow)
+        //   )
+        //    return false;
         if (!multiplicity_end.Equals(acs.multiplicity_end)
                || !multiplicity_start.Equals(acs.multiplicity_start)
-               || !type_arrow.Equals(acs.type_arrow)
            )
             return false;
-
+        if (!type_arrow.Equals(acs.type_arrow) && !acs.type_arrow.Equals(typearrow.UNDEF))
+            return false;
         //depending on the type sometimes the start/end choice does not matter since it's not really an arrow but a bidirectional line
         //start by comparing the direct ends
         if (!compareEndsBasedOnType(false, acs))

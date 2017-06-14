@@ -6,7 +6,9 @@ public class BigBoxScript : MonoBehaviour {
 
     protected ArrayList listItems ;
     protected Vector3 nextPos;
-    float spacer;
+    public float spacer;
+
+    public Vector3 offset;
 
     public bool isCorrect(NameCorrectionStruct ncs)
     {
@@ -60,7 +62,6 @@ public class BigBoxScript : MonoBehaviour {
         float y = col.bounds.size.y;
         nextPos = transform.position+new Vector3(0,y/2-0.3f,-1);
         listItems = new ArrayList();
-        spacer = 0.0f;
 
 
     }
@@ -69,7 +70,7 @@ public class BigBoxScript : MonoBehaviour {
     {
         listItems.Add(gobj);
         //gobj.transform.SetParent(this.transform);
-        gobj.transform.position = nextPos;
+        gobj.transform.position = nextPos+offset;
 
         DragDropScript dds = gobj.GetComponent<DragDropScript>();
         if (dds == null)

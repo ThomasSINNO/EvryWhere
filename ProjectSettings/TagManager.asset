@@ -8,6 +8,20 @@ TagManager:
   - ArrowButton
   - ParentBoxTag
   - ParentArrowTag
+  - Activite
+  - Xor
+  - And
+  - FinErreur
+  - MessageRec
+  - MessageEnv
+  - Minuterie
+  - SignalFin
+  - SignalRec
+  - SignalEnv
+  - Oui
+  - Non
+  - Fleche
+  - Pool
   layers:
   - Default
   - TransparentFX
