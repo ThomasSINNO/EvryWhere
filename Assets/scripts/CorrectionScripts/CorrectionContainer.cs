@@ -129,12 +129,14 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
     public string dump()
     {
         string r = "";
+        r += "type_arrow: " + type_arrow + "\n";
         r += "name_start: " + name_start + "\n";
         r += "name_end: " + name_end + "\n";
         r += "multiplicity_start: " + multiplicity_start + "\n";
         r += "multiplicity_end: " + multiplicity_end + "\n";
         r += "middle_link_to_arrow_start: " + middle_link_to_arrow_start + "\n";
         r += "middle_link_to_arrow_end: " + middle_link_to_arrow_end + "\n";
+        r += "type_arrow_middle_link: " + type_arrow_middle_link + "\n";
         return r;
     }
 
@@ -205,6 +207,8 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
             return false;
 
         ArrowCorrectionStruct acs = (ArrowCorrectionStruct)obj;
+
+        
         //if (!multiplicity_end.Equals(acs.multiplicity_end)
         //       || !multiplicity_start.Equals(acs.multiplicity_start)
         //      // || !type_arrow.Equals(acs.type_arrow)

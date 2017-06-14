@@ -6,6 +6,30 @@ using UnityEngine.SceneManagement;
 public class consignesuml1script : MonoBehaviour {
 
     public GameObject consignes;
+    bool already_on_screen;
+
+    private void Start()
+    {
+        already_on_screen = false;
+        action();
+    }
+    void action()
+    {
+        if (!already_on_screen)
+        {
+            GameObject cons = GameObject.Instantiate(consignes);
+            cons.tag = ("ConsignesTag");
+            cons.transform.position = new Vector3(0, 0, -7);
+            already_on_screen = true;
+        }
+        else
+        {
+            GameObject[] cons = GameObject.FindGameObjectsWithTag("ConsignesTag");
+            foreach (GameObject consigne in cons)
+                Destroy(consigne);
+            already_on_screen = false;
+        }
+    }
     void OnGUI()
     {
         const int buttonWidth = 70;
@@ -25,8 +49,7 @@ public class consignesuml1script : MonoBehaviour {
           )
         )
         {
-            GameObject cons = GameObject.Instantiate(consignes);
-            cons.transform.position = new Vector3(0, 0, -7);
+            action();           
         }
     }
 }

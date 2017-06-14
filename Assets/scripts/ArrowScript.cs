@@ -26,8 +26,6 @@ public class ArrowScript : MonoBehaviour {
         ArrowScript s_arrow_script = depart.GetComponent<ArrowScript>();
         ArrowScript e_arrow_script = arrivee.GetComponent<ArrowScript>();
 
-        //----------type gestion
-        r.type_arrow = this.type;
 
         //----------start gestion
         //simple case
@@ -98,6 +96,8 @@ public class ArrowScript : MonoBehaviour {
         r.multiplicity_start = s_namebox_script.getName();
         r.multiplicity_end = e_namebox_script.getName();
 
+        //----------type gestion
+        r.type_arrow = this.type;
         return r;
     }
 
@@ -108,7 +108,7 @@ public class ArrowScript : MonoBehaviour {
 
     private void Awake()
     {
-        //print("AS Awake called! ");
+       // print("AS Awake called! ");
         type = typearrow.UNDEF;
         depart = null;
         arrivee = null;
@@ -117,23 +117,6 @@ public class ArrowScript : MonoBehaviour {
         is_between_2_boxes = true;
         has_midpoint_attached = false;
     }
-
-    private void Start()
-    {
-        type = typearrow.UNDEF;
-        depart = null;
-        arrivee = null;
-        multdep = null;
-        multarr = null;
-    }
-
-    public void setthings(typearrow t,GameObject d,GameObject a)
-    {
-        this.type = t;
-        this.depart = d;
-        this.arrivee = a;
-    }
-
     public void setMidPointAttached(bool b)
     {
         has_midpoint_attached = b;
@@ -156,8 +139,8 @@ public class ArrowScript : MonoBehaviour {
         type = t;
         depart = d;
         arrivee = a;
-        string dump = getCorrectionStruct().dump();
-        //print("DUMP:\n"+dump );//to set is_between_2_boxes
+        string dump = getCorrectionStruct().dump();//to set is_between_2_boxes
+        //print("DUMP:\n"+dump );
     }
 
     public void deletearrow()

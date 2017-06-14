@@ -12,8 +12,8 @@ public class NameBoxScript : BigBoxScript {
         List<string> l = this.getListAsNameList();
         if (l.Count != 1)
         {
-            //print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
-            //   + "Their is not one and only one name inside this nameboxscript");
+            CorrectionManagerScript.addLog(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+              + "Their is not one and only one name inside this nameboxscript");
             return "";
         }
         return l[0];

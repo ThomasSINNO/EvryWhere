@@ -15,8 +15,10 @@ public class ArrowCorrectionScript : MonoBehaviour, CorrectionOfTagInterface
             return false;
         }
         ArrowCorrectionStruct current_args = AS.getCorrectionStruct();
-        //print("Comparing:\n->Mine:\n" + current_args.dump()+"AND:\n->Correction\n"+acs.dump());
-        return current_args.Equals(acs);
+        CorrectionManagerScript.addLog("Comparing:\n->Mine:\n" + current_args.dump() + "AND:\n->Correction\n" + acs.dump());
+        bool r= current_args.Equals(acs);
+        CorrectionManagerScript.addLog("==>Result: " + r);
+        return r;
     }
 
     public bool isCorrect(TagCorrectionsStruct tcs)

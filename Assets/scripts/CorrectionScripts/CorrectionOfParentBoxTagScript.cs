@@ -82,7 +82,7 @@ public class CorrectionOfParentBoxTagScript : MonoBehaviour, CorrectionOfTagInte
         }
         if (good_correction_container == null)
         {
-            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
+            CorrectionManagerScript.addLog(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
              + "Couldn't find the name of the box: " + name_of_box + " in the correction table for the tag: " + tcs.tag);
             return false;
         }
@@ -112,10 +112,12 @@ public class CorrectionOfParentBoxTagScript : MonoBehaviour, CorrectionOfTagInte
         {
             //if everything is fine, we have to put is_correct to true and return true
             good_correction_container.is_correct = true;
-            //print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
-            //+ "The correction with name: " + name_of_box + " for the tag: " + tcs.tag + " is correct !");
+            CorrectionManagerScript.addLog(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
+            + "The correction with name: " + name_of_box + " for the tag: " + tcs.tag + " is correct !");
             return true;
         }
+        CorrectionManagerScript.addLog(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
+            + "The correction with name: " + name_of_box + " for the tag: " + tcs.tag + " is false !");
         return false;
     }
 }

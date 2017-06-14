@@ -97,8 +97,6 @@ public class FlecheScript : MonoBehaviour {
         }
         else
         {
-
-
             if (tab.Count > 1)
             {
 
@@ -112,11 +110,8 @@ public class FlecheScript : MonoBehaviour {
                     print("ERROR: the arrow (parent of depart and arrivee) doesn't have an arrowscript");
                     return;
                 }
-                arrow_script.setthings(this.type, tab[0], tab[1]);
-
                 GameObject true_start_point = tab[0].transform.parent.gameObject;
                 GameObject true_end_point = tab[1].transform.parent.gameObject;
-                arrow_script.type = this.type;
                 arrow_script.setArrowProperties(type, true_start_point, true_end_point);
                 //check if the start/end point is an arrow
                 ArrowScript true_start_point_arrow_script = true_start_point.GetComponent<ArrowScript>();

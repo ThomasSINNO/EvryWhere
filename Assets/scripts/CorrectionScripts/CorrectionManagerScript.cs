@@ -10,6 +10,26 @@ interface CorrectionOfTagInterface
 
 public class CorrectionManagerScript : MonoBehaviour
 {
+    protected static string static_log;
+
+    static CorrectionManagerScript()
+    {
+        static_log = "";
+    }
+
+    public static void addLog(string to_add)
+    {
+        static_log += "\n" + to_add;
+    } 
+    public static string getStaticLog()
+    {
+        return static_log;
+    }
+    public static void printStaticLog()
+    {
+        print(static_log);
+        static_log = "";
+    }
 
     private CorrectionContainer cc;
     // Use this for initialization
@@ -117,13 +137,13 @@ public class CorrectionManagerScript : MonoBehaviour
             return false;
         }
 
-        if (tagged_array.Length != tcs.table.Count+1)
+        if (tagged_array.Length != tcs.table.Count)
         {
-            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
+            CorrectionManagerScript.addLog(System.Reflection.MethodBase.GetCurrentMethod().Name + ":LOG:\n"
                     + "For the tag: " + tcs.tag + " number of objects mismatch: currently:" + tagged_array.Length + " needed:" + tcs.table.Count);
             return false;
         }
-        //print("TAGGED LENGTH: " + tagged_array.Length);
+        CorrectionManagerScript.addLog("TAGGED LENGTH: " + tagged_array.Length);
         // we will pass to each object the struct will all the corrections for this type of tag and each will modify it (say if its content is ok)
         bool r = (tagged_array.Length > 0);
         foreach (GameObject go in tagged_array)
@@ -132,19 +152,18 @@ public class CorrectionManagerScript : MonoBehaviour
             if (correction == null)
             {
                 print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
-                   + "Object tagged as : " + tcs.tag + " has no CorrectionOfTagType script attached");
+                   + "Object tagged as : " + tcs.tag + " has no CorrectionOfTagInterface script attached");
                 return false;
             }
             r = r & correction.isCorrect(tcs);// logical ANDing
 
-            //print("current tagged object==>Is correct: " + (r ? "true" : "false"));
+            CorrectionManagerScript.addLog("current tagged object==>Is correct: " + (r ? "true" : "false"));
             if (r == false)//to skip the correction process of the rest of this tag
                 return false;
         }
-        //print("TAG======>Is correct: " + (r ? "true" : "false"));
+        CorrectionManagerScript.addLog("TAG:"+ tcs.tag +" ======>Is correct: " + (r ? "true" : "false"));
         if (r == true)
             tcs.is_correct = true;
-
         return r;
     }
 
