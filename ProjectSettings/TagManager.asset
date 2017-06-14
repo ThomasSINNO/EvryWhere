@@ -22,6 +22,7 @@ TagManager:
   - Non
   - Fleche
   - Pool
+  - ConsignesTag
   layers:
   - Default
   - TransparentFX

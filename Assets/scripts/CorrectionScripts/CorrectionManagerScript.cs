@@ -36,7 +36,7 @@ public class CorrectionManagerScript : MonoBehaviour
     void Awake()
     {
         cc = null;
-        print("CMS AWAKE!");
+        //print("CMS AWAKE!");
     }
 
     public bool loadCorrection(CorrectionContainer cc_)
