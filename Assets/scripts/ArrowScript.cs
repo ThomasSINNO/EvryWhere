@@ -10,6 +10,9 @@ public class ArrowScript : MonoBehaviour {
     private GameObject multdep;
     private GameObject multarr;
 
+
+    public NameBoxScript debug_1, debug_2;
+
     public bool is_between_2_boxes;
     private bool has_midpoint_attached;
 
@@ -44,6 +47,10 @@ public class ArrowScript : MonoBehaviour {
             ArrowCorrectionStruct ends_of_second_arrow = s_arrow_script.getCorrectionStruct();
             r.middle_link_to_arrow_start = ends_of_second_arrow.name_start;
             r.middle_link_to_arrow_end = ends_of_second_arrow.name_end;
+
+            r.middle_link_to_arrow_multiplicity_start = ends_of_second_arrow.multiplicity_start;
+            r.middle_link_to_arrow_multiplicity_end = ends_of_second_arrow.multiplicity_end;
+
             //print("Start=arrow!");           
             is_between_2_boxes = false;
         }
@@ -64,6 +71,10 @@ public class ArrowScript : MonoBehaviour {
             ArrowCorrectionStruct ends_of_second_arrow = e_arrow_script.getCorrectionStruct();
             r.middle_link_to_arrow_start = ends_of_second_arrow.name_start;
             r.middle_link_to_arrow_end = ends_of_second_arrow.name_end;
+
+            r.middle_link_to_arrow_multiplicity_start = ends_of_second_arrow.multiplicity_start;
+            r.middle_link_to_arrow_multiplicity_end = ends_of_second_arrow.multiplicity_end;
+
             //print("end=arrow!");
             if (!is_between_2_boxes)
             {
@@ -92,12 +103,21 @@ public class ArrowScript : MonoBehaviour {
                   + "One of the start(depart)/end(arrivee) children of the arrow doesn't have a namebox script attached");
             return r;
         }
+        debug_1 = s_namebox_script;
+        debug_2 = e_namebox_script;
+
+
+
+
         //get the name of the namebox
         r.multiplicity_start = s_namebox_script.getName();
+        //print("Constructed arrow mul_start:\n" + s_namebox_script.getName());
         r.multiplicity_end = e_namebox_script.getName();
-
+        //print("Constructed arrow mul_end:\n" + e_namebox_script.getName());
         //----------type gestion
         r.type_arrow = this.type;
+
+       
         return r;
     }
 
@@ -108,7 +128,13 @@ public class ArrowScript : MonoBehaviour {
 
     private void Awake()
     {
-       // print("AS Awake called! ");
+        // print("AS Awake called! ");
+
+        debug_1 = null;
+        debug_2 = null;
+
+
+
         type = typearrow.UNDEF;
         depart = null;
         arrivee = null;
@@ -145,6 +171,25 @@ public class ArrowScript : MonoBehaviour {
 
     public void deletearrow()
     {
+        GameObject go_mul_s = this.gameObject.transform.Find("depart").gameObject;
+        GameObject go_mul_e = this.gameObject.transform.Find("arrivee").gameObject;
+        if (go_mul_s == null || go_mul_e == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                  + "Can't find the depart and arrivee children of the arrow");
+            return ;
+        }
+        NameBoxScript s_namebox_script = go_mul_s.GetComponent<NameBoxScript>();
+        NameBoxScript e_namebox_script = go_mul_e.GetComponent<NameBoxScript>();
+
+        if (s_namebox_script == null || e_namebox_script == null)
+        {
+            print(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
+                  + "One of the start(depart)/end(arrivee) children of the arrow doesn't have a namebox script attached");
+            return ;
+        }
+        s_namebox_script.emptyList();//to prevent null pointer
+        e_namebox_script.emptyList();//to prevent null pointer
         Destroy(this.gameObject);
     }
 

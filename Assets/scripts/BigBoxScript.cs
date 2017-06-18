@@ -10,6 +10,26 @@ public class BigBoxScript : MonoBehaviour {
 
     public Vector3 offset;
 
+    public void emptyList()
+    {
+        while (listItems.Count >0)
+        {
+            GameObject o = (GameObject)listItems[0];
+            DragDropScript dds = o.GetComponent<DragDropScript>();
+            if (dds == null)
+            {
+                DragDropMulScript ddms = o.GetComponent<DragDropMulScript>();
+                if (ddms != null)
+                   ddms.resetPosition();
+                else
+                    continue;
+            }
+            else
+                dds.resetPosition();
+            removeItem(o);
+        }
+    }
+
     public bool isCorrect(NameCorrectionStruct ncs)
     {
         if (ncs.table.Count != this.listItems.Count)
@@ -86,9 +106,10 @@ public class BigBoxScript : MonoBehaviour {
 
     public virtual void removeItem(GameObject gobj)
     {
+        //print("REMOVE: "+gobj.name+" from "+this.name+":"+this.GetInstanceID());
         int i = listItems.IndexOf(gobj);
         if (i < 0)
-            print("item not found in array");
+            print("item  " + gobj.name + " not found in array" + " from " + this.name + ":" + this.GetInstanceID());
         else
         {
             float num = 0f;
@@ -96,7 +117,10 @@ public class BigBoxScript : MonoBehaviour {
             if (dds == null)
             {
                 DragDropMulScript ddms = gobj.GetComponent<DragDropMulScript>();
-                num = ddms.getHeight();
+                if (ddms != null)
+                    num = ddms.getHeight();
+                else
+                    return;
             }else
             {
                 num = dds.getHeight();
@@ -117,6 +141,6 @@ public class BigBoxScript : MonoBehaviour {
     void OnMouseDown()
     {
         //print("onmousedown bbs!");
-       
+        //print(" from " + this.name + ":" + this.GetInstanceID());
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class NameBoxScript : BigBoxScript {
 
     bool isFree;
-
+   
 
     public string getName()
     {
@@ -13,9 +13,11 @@ public class NameBoxScript : BigBoxScript {
         if (l.Count != 1)
         {
             CorrectionManagerScript.addLog(System.Reflection.MethodBase.GetCurrentMethod().Name + ":ERROR:\n"
-              + "Their is not one and only one name inside this nameboxscript");
+              + this.gameObject.name + " :There is not one and only one name inside this nameboxscript");
+           // print("getName() on "+this.gameObject.name+" => returns \"\"");
             return "";
         }
+        //print("getName() " + this.gameObject.name + "=> returns " + debug_name);
         return l[0];
     }
 
@@ -23,7 +25,6 @@ public class NameBoxScript : BigBoxScript {
     // Use this for initialization
     void Awake () {
         isFree = true;
-
         nextPos = transform.position;
 	}
 

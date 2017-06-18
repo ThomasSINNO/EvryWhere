@@ -125,6 +125,7 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
     public string multiplicity_start, multiplicity_end;
     public typearrow type_arrow;
     public string middle_link_to_arrow_start, middle_link_to_arrow_end;//one end of the arrow is pointing to a middle of another arrow 
+    public string middle_link_to_arrow_multiplicity_start, middle_link_to_arrow_multiplicity_end;//one end of the arrow is pointing to a middle of another arrow 
     public typearrow type_arrow_middle_link;
     public string dump()
     {
@@ -134,9 +135,12 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
         r += "name_end: " + name_end + "\n";
         r += "multiplicity_start: " + multiplicity_start + "\n";
         r += "multiplicity_end: " + multiplicity_end + "\n";
+        r += "type_arrow_middle_link: " + type_arrow_middle_link + "\n";
         r += "middle_link_to_arrow_start: " + middle_link_to_arrow_start + "\n";
         r += "middle_link_to_arrow_end: " + middle_link_to_arrow_end + "\n";
-        r += "type_arrow_middle_link: " + type_arrow_middle_link + "\n";
+        r += "middle_link_to_arrow_multiplicity_start: " + middle_link_to_arrow_multiplicity_start + "\n";
+        r += "middle_link_to_arrow_multiplicity_end: " + middle_link_to_arrow_multiplicity_end + "\n";
+
         return r;
     }
 
@@ -151,6 +155,8 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
         type_arrow_middle_link = typearrow.UNDEF;
         middle_link_to_arrow_start = "";
         middle_link_to_arrow_end = "";
+        middle_link_to_arrow_multiplicity_start = "";
+        middle_link_to_arrow_multiplicity_end = "";
     }
 
     public ArrowCorrectionStruct(ArrowCorrectionStruct acs) : base(acs)
@@ -160,40 +166,60 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
         multiplicity_end = acs.multiplicity_end;
         multiplicity_start = acs.multiplicity_start;
         type_arrow = acs.type_arrow;
+        type_arrow_middle_link = acs.type_arrow_middle_link;
         middle_link_to_arrow_start = acs.middle_link_to_arrow_start;
         middle_link_to_arrow_end = acs.middle_link_to_arrow_end;
+        middle_link_to_arrow_multiplicity_start = acs.middle_link_to_arrow_multiplicity_start;
+        middle_link_to_arrow_multiplicity_end = acs.middle_link_to_arrow_multiplicity_end;
     }
 
     //ends_false__true_middle ===> put to false if want to compare the direct ends, true if want to compare the ends linked by the middle of another arrow
     public bool compareEndsBasedOnType(bool ends_false__true_middle, ArrowCorrectionStruct acs)
     {
-        string a1, a2, b1, b2;
+        string a1, a2, b1, b2, c1,c2, d1,d2;
         typearrow type_our_selection;
-        if (ends_false__true_middle)
+        if (ends_false__true_middle)//middle link
         {
+            a1 = middle_link_to_arrow_start;
+            a2 = acs.middle_link_to_arrow_start;
+            b1 = middle_link_to_arrow_end;
+            b2 = acs.middle_link_to_arrow_end;
+
+            c1 = middle_link_to_arrow_multiplicity_start;
+            c2 = acs.middle_link_to_arrow_multiplicity_start;
+            d1 = middle_link_to_arrow_multiplicity_end;
+            d2 = acs.middle_link_to_arrow_multiplicity_end;
+
+
+            type_our_selection = acs.type_arrow_middle_link;
+        }
+        else
+        {//ends
             a1 = name_start;
             a2 = acs.name_start;
             b1 = name_end;
             b2 = acs.name_end;
-            type_our_selection = this.type_arrow_middle_link;
-        }
-        else
-        {
-            a1 = multiplicity_start;
-            a2 = acs.multiplicity_start;
-            b1 = multiplicity_end;
-            b2 = acs.multiplicity_end;
-            type_our_selection = this.type_arrow;
+
+            c1 = multiplicity_start;
+            c2 = acs.multiplicity_start;
+            d1 = multiplicity_end;
+            d2 = acs.multiplicity_end;
+
+            type_our_selection = acs.type_arrow;
         }
         //depending on the type sometimes the start/end choice does not matter since it's not really an arrow but a bidirectional line
         if (type_our_selection == typearrow.LINK || type_our_selection == typearrow.UNDEF || type_our_selection == typearrow.ASSO)
         {
             if (!compareCrossedEquality(a1, a2, b1, b2))
                 return false;
+            if (!compareCrossedEquality(c1, c2, d1, d2))
+                return false;
         }
         else
         {
             if (!compareExactEquality(a1, a2, b1, b2))
+                return false;
+            if (!compareExactEquality(c1, c2, d1, d2))
                 return false;
         }
         return true;
@@ -207,17 +233,6 @@ public class ArrowCorrectionStruct : LastLevelCorrectionStruct
             return false;
 
         ArrowCorrectionStruct acs = (ArrowCorrectionStruct)obj;
-
-        
-        //if (!multiplicity_end.Equals(acs.multiplicity_end)
-        //       || !multiplicity_start.Equals(acs.multiplicity_start)
-        //      // || !type_arrow.Equals(acs.type_arrow)
-        //   )
-        //    return false;
-        if (!multiplicity_end.Equals(acs.multiplicity_end)
-               || !multiplicity_start.Equals(acs.multiplicity_start)
-           )
-            return false;
         if (!type_arrow.Equals(acs.type_arrow) && !acs.type_arrow.Equals(typearrow.UNDEF))
             return false;
         //depending on the type sometimes the start/end choice does not matter since it's not really an arrow but a bidirectional line

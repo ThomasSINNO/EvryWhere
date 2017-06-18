@@ -47,13 +47,17 @@ public class level0 : MonoBehaviour
         ArrowCorrectionStruct current = null;
 
         //a simple arrow between 2 boxes
+        /*
         cc.table[i].table.Add(new ArrowCorrectionStruct());
-        cc.table[i].table[j].name = "Arrow(Clone)";
+        cc.table[i].table[j].name = "";
         current = (ArrowCorrectionStruct)cc.table[i].table[j];
         current.name_start = "Duree";
         current.name_end = "Telephone";
         current.multiplicity_start = "Destination";
+        
+        //print(current.dump());
         j++;
+        */
         /*
             //a simple arrow between 2 boxes
             cc.table[i].table.Add(new ArrowCorrectionStruct());
@@ -64,14 +68,16 @@ public class level0 : MonoBehaviour
             j++;
 */
         //an association class : note that only the point of view of the association class is here and it will check EVERYTHING
-        // /!\NO a simple arrow between 2 boxes to be put for the link on which the assocaition class stands
-        //cc.table[i].table.Add(new ArrowCorrectionStruct());
-        //cc.table[i].table[j].name = "Arrow(Clone)";
-        //current = (ArrowCorrectionStruct)cc.table[i].table[j];
-        //current.name_start = "Pays";
-        //current.name_end = "Telephone";
-        //current.middle_link_to_arrow_start = "Telephone";
-        //current.middle_link_to_arrow_end = "DateDepart";
+        // /!\ NO simple arrow between 2 boxes is to be put for the link on which the assocaition class stands
+        // DO NOT use the current.type_arrow for assocaition class, ONLY current.type_arrow_middle_link
+        cc.table[i].table.Add(new ArrowCorrectionStruct());
+        cc.table[i].table[j].name = "Arrow(Clone)";
+        current = (ArrowCorrectionStruct)cc.table[i].table[j];
+        current.name_start = "Pays";
+        current.middle_link_to_arrow_start = "Telephone";
+        current.middle_link_to_arrow_end = "DateDepart";
+        current.multiplicity_start = "Adresse";
+        current.middle_link_to_arrow_multiplicity_end = "IdAccomp";
         j++;
 
 
@@ -115,6 +121,7 @@ public class level0 : MonoBehaviour
           )
         )
         {
+            //print(((ArrowCorrectionStruct)cc.table[0].table[0]).dump());
             bool r = cms.isCorrect();
             CorrectionManagerScript.addLog("=============>Is correct: " + (r ? "true" : "false"));
             CorrectionManagerScript.printStaticLog();

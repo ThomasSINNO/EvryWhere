@@ -14,7 +14,7 @@ public class CorrectionManagerScript : MonoBehaviour
 
     static CorrectionManagerScript()
     {
-        static_log = "";
+        static_log = "Correction LOG:";
     }
 
     public static void addLog(string to_add)
@@ -28,7 +28,7 @@ public class CorrectionManagerScript : MonoBehaviour
     public static void printStaticLog()
     {
         print(static_log);
-        static_log = "";
+        static_log = "Correction LOG:";
     }
 
     private CorrectionContainer cc;

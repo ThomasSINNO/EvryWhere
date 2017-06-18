@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class DragDropScript : MonoBehaviour {
 
-    protected GameObject currentFather;
+    public GameObject currentFather;
     protected GameObject defaultFather;
 
     protected BoxCollider2D box_collider;
     protected Vector3 initial_box_colldier_size;
     protected Vector3 short_box_colldier_size;
+
+    protected bool is_active;
 
     protected void shortenCollider()
     {
@@ -17,7 +19,12 @@ public class DragDropScript : MonoBehaviour {
     }
     protected void resetCollider()
     {
+        //tehre might be a colliding problem when we re grow it to its actual size so let's backup the current father and re apply it afterwards
+        GameObject currentFather_back= currentFather;
+        //print("resetCollider before: " + currentFather.name + ":" + currentFather.GetInstanceID());
         box_collider.size = initial_box_colldier_size;
+        currentFather = currentFather_back;
+        //print("resetCollider after: " + currentFather.name + ":" + currentFather.GetInstanceID());
     }
 
     private void Start()
@@ -46,9 +53,7 @@ public class DragDropScript : MonoBehaviour {
                 bbs.addItem(gameObject);
 
         }
-       
-
-
+        is_active = false;
     }
 
     public void resetPosition()
@@ -76,12 +81,12 @@ public class DragDropScript : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D coll)
     {
         //print("inside");
-        if (coll.gameObject.GetComponent<BigBoxScript>() != null)
+        if (coll.gameObject.GetComponent<BigBoxScript>() != null && is_active)
         {
+            //print("OnTriggerEnter2D before: " + currentFather.name + ":" + currentFather.GetInstanceID());
             currentFather = coll.gameObject;
-        }
-        
-
+           // print("OnTriggerEnter2D after: " + currentFather.name + ":" + currentFather.GetInstanceID());
+        } 
     }
 
 
@@ -103,7 +108,7 @@ public class DragDropScript : MonoBehaviour {
         BigBoxScript bbs = currentFather.GetComponent<BigBoxScript>();
         bbs.removeItem(this.gameObject);
         shortenCollider();
-
+        is_active = true;
     }  
     void OnMouseUp()
     {
@@ -116,6 +121,7 @@ public class DragDropScript : MonoBehaviour {
         {
             bbs.addItem(this.gameObject);
         }
+        is_active = false;
     }
 
     private void OnMouseDrag()
