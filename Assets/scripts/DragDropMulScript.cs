@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class DragDropMulScript : DragDropScript
 {
-
     private void Start()
     {
+        box_collider = this.gameObject.GetComponent<BoxCollider2D>();
+        if (box_collider == null)
+        {
+            print("ERROR:could not find box colldier on drag drop script");
+            return;
+        }
+        initial_box_colldier_size = box_collider.size;
+        short_box_colldier_size = new Vector3(0.5f, 0.5f, 0.5f);
         defaultFather = GameObject.Find("Liste2");
         currentFather = defaultFather;
         if (defaultFather == null)
         {
             print("ERREUR DE L'ESPACE");
         }
+        
         else
         {
+            print("list2 ok");
             BigBoxScript bbs = defaultFather.GetComponent<BigBoxScript>();
             if (bbs == null)
                 print("error bbs null");
@@ -23,103 +32,31 @@ public class DragDropMulScript : DragDropScript
         }
     }
 
-    //public void resetPosition()
+    //private void OnMouseDown()
     //{
-    //    currentFather2 = defaultFather2;
-    //    BigBoxScript bbs = defaultFather2.GetComponent<BigBoxScript>();
-    //    bbs.addItem(this.gameObject);
-
-    //}
-    //public float getHeight()
-    //{
-    //    Collider2D coll = gameObject.GetComponent<Collider2D>();
-    //    if (coll == null)
+    //    GameObject[] spots = GameObject.FindGameObjectsWithTag("muldrop");
+    //    foreach (GameObject g in spots)
     //    {
-    //        print("error getting collider");
-    //        return (-1);
-    //    }
-    //    else
-    //    {
-    //        return (coll.bounds.size.y);
-    //    }
+    //        NameBoxScript nbs = g.GetComponent<NameBoxScript>();
+    //        SpriteRenderer rend = g.gameObject.GetComponent<SpriteRenderer>();
+    //        rend.color = Color.red;
 
+    //    }
+    //    base.OnMouseDown();
     //}
 
-
-    //void OnTriggerEnter2D(Collider2D coll)
+    //private void OnMouseUp()
     //{
-    //    print("inside");
-    //    if (coll.gameObject.GetComponent<BigBoxScript>() != null)
+    //    GameObject[] spots = GameObject.FindGameObjectsWithTag("muldrop");
+    //    foreach (GameObject g in spots)
     //    {
-    //        currentFather2 = coll.gameObject;
+    //        NameBoxScript nbs = g.GetComponent<NameBoxScript>();
+    //        SpriteRenderer rend = g.gameObject.GetComponent<SpriteRenderer>();
+    //        rend.sprite = g.GetComponent<NameBoxScript>().spr;
     //    }
-
-
+    //    base.OnMouseUp();
     //}
 
-
-    //private void OnTriggerExit2D(Collider2D coll)
-    //{
-    //    print("outside");
-    //    if (coll.gameObject.GetComponent<BigBoxScript>() != null)
-    //    {
-    //        currentFather2 = defaultFather2;
-    //    }
-
-    //}
-
-
-
-
-
-
-
-
-
-    //void OnMouseDown()
-    //{
-    //    print("onmousedown !");
-
-    //    BigBoxScript bbs = currentFather2.GetComponent<BigBoxScript>();
-    //    bbs.removeItem(this.gameObject);
-
-    //}
-
-
-
-
-
-
-
-
-
-
-
-    //void OnMouseUp()
-    //{
-    //    BigBoxScript bbs = currentFather2.GetComponent<BigBoxScript>();
-    //    if (bbs == null)
-    //    {
-    //        print("erreur bbs=null");
-    //    }
-    //    else
-    //    {
-    //        bbs.addItem(this.gameObject);
-    //    }
-    //}
-
-
-
-
-
-
-
-    //private void OnMouseDrag()
-    //{
-    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //    Vector3 rayPoint = ray.GetPoint(0);
-    //    transform.position = rayPoint;
-    //}
 
 
 }

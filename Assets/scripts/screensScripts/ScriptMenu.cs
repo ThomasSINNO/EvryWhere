@@ -6,8 +6,8 @@ public class ScriptMenu : MonoBehaviour {
 
     void OnGUI()
     {
-        const int buttonWidth = 84;
-        const int buttonHeight = 60;
+        const int buttonWidth = 150;
+        const int buttonHeight = 100;
 
         // Affiche un bouton pour démarrer la partie
         if (

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BigBoxScript : MonoBehaviour {
 
     protected ArrayList listItems ;
-    protected Vector3 nextPos;
+    public Vector3 nextPos;
     public float spacer;
 
     public Vector3 offset;

@@ -23,6 +23,7 @@ TagManager:
   - Fleche
   - Pool
   - ConsignesTag
+  - muldrop
   layers:
   - Default
   - TransparentFX

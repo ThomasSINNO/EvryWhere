@@ -5,11 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class back1salleScript : MonoBehaviour
 {
+    public int place;
+    public int offset;
+    public int width;
+    public int height;
 
     void OnGUI()
     {
-        const int buttonWidth = 70;
-        const int buttonHeight = 30;
+        int buttonWidth = width;
+        int buttonHeight = height;
 
         // Affiche un bouton pour démarrer la partie
         if (
@@ -17,7 +21,7 @@ public class back1salleScript : MonoBehaviour
             // Centré en x, 2/3 en y
             new Rect(
               10,
-              (Screen.height) - (buttonHeight) - 10,
+              (Screen.height) - place*((buttonHeight) + offset),
               buttonWidth,
               buttonHeight
             ),

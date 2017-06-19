@@ -6,34 +6,26 @@ using UnityEngine.SceneManagement;
 public class consignesuml1script : MonoBehaviour {
 
     public GameObject consignes;
-    bool already_on_screen;
+    public int place;
+    public int offset;
+    public int width;
+    public int height;
+    static bool active;
 
-    private void Start()
+    public void Start()
     {
-        already_on_screen = false;
-        action();
+        active = true;
+        GameObject cons = GameObject.Instantiate(consignes);
+        cons.transform.position = new Vector3(0, 0, -7);
     }
-    void action()
+    public static void setboolcons(bool b)
     {
-        if (!already_on_screen)
-        {
-            GameObject cons = GameObject.Instantiate(consignes);
-            cons.tag = ("ConsignesTag");
-            cons.transform.position = new Vector3(0, 0, -7);
-            already_on_screen = true;
-        }
-        else
-        {
-            GameObject[] cons = GameObject.FindGameObjectsWithTag("ConsignesTag");
-            foreach (GameObject consigne in cons)
-                Destroy(consigne);
-            already_on_screen = false;
-        }
+        active = b;
     }
     void OnGUI()
     {
-        const int buttonWidth = 70;
-        const int buttonHeight = 30;
+        int buttonWidth = width;
+        int buttonHeight = height;
 
         // Affiche un bouton pour démarrer la partie
         if (
@@ -41,7 +33,7 @@ public class consignesuml1script : MonoBehaviour {
             // Centré en x, 2/3 en y
             new Rect(
               10,
-              (Screen.height) - 3*(buttonHeight) - 30,
+              (Screen.height) - place*((buttonHeight) + offset),
               buttonWidth,
               buttonHeight
             ),
@@ -49,7 +41,11 @@ public class consignesuml1script : MonoBehaviour {
           )
         )
         {
-            action();           
+            if (!active)
+            {
+                GameObject cons = GameObject.Instantiate(consignes);
+                cons.transform.position = new Vector3(0, 0, -7);
+            }
         }
     }
 }

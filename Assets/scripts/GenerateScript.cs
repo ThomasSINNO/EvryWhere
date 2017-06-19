@@ -4,12 +4,12 @@ using UnityEngine;
 
 public enum typeobject
 {
-    ACTIV,AND,XOR,FINERR,MESSENV,MESSREC,TIME,SIGNFIN,SIGNREC,SIGNENV,OUI,NON,ARROW
+    ACTIV,AND,XOR,FINERR,MESSENV,MESSREC,TIME,SIGNFIN,SIGNREC,SIGNENV,OUI,NON
 };
 
 public class GenerateScript : MonoBehaviour {
 
-    public typeobject type;
+    public GameObject type;
 	// Use this for initialization
 	void Start () {
 		
@@ -24,6 +24,7 @@ public class GenerateScript : MonoBehaviour {
             ps.Activate(type);
 
         }
+
     }
 
     // Update is called once per frame

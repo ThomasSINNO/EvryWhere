@@ -24,6 +24,7 @@ public class dialogscript : MonoBehaviour {
         } else
         {
             Destroy(this.gameObject);
+            consignesuml1script.setboolcons(false);
         }
         
     }

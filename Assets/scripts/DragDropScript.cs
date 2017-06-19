@@ -8,8 +8,8 @@ public class DragDropScript : MonoBehaviour {
     protected GameObject defaultFather;
 
     protected BoxCollider2D box_collider;
-    protected Vector3 initial_box_colldier_size;
-    protected Vector3 short_box_colldier_size;
+    protected Vector2 initial_box_colldier_size;
+    protected Vector2 short_box_colldier_size;
 
     protected bool is_active;
 
@@ -19,7 +19,7 @@ public class DragDropScript : MonoBehaviour {
     }
     protected void resetCollider()
     {
-        //tehre might be a colliding problem when we re grow it to its actual size so let's backup the current father and re apply it afterwards
+        //there might be a colliding problem when we re grow it to its actual size so let's backup the current father and re apply it afterwards
         GameObject currentFather_back= currentFather;
         //print("resetCollider before: " + currentFather.name + ":" + currentFather.GetInstanceID());
         box_collider.size = initial_box_colldier_size;
@@ -56,7 +56,7 @@ public class DragDropScript : MonoBehaviour {
         is_active = false;
     }
 
-    public void resetPosition()
+    public virtual void resetPosition()
     {
         currentFather = defaultFather;
         BigBoxScript bbs = defaultFather.GetComponent<BigBoxScript>();
@@ -101,7 +101,7 @@ public class DragDropScript : MonoBehaviour {
     }
 
     
-    void OnMouseDown()
+    protected virtual void OnMouseDown()
     {
         //print("onmousedown !");
 
@@ -110,7 +110,7 @@ public class DragDropScript : MonoBehaviour {
         shortenCollider();
         is_active = true;
     }  
-    void OnMouseUp()
+    protected virtual void OnMouseUp()
     {
         BigBoxScript bbs = currentFather.GetComponent<BigBoxScript>();
         resetCollider();
@@ -127,7 +127,7 @@ public class DragDropScript : MonoBehaviour {
     private void OnMouseDrag()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Vector3 rayPoint = ray.GetPoint(0);
+        Vector3 rayPoint = ray.GetPoint(0)+new Vector3(0,0,5);
         transform.position = rayPoint;
     }
 

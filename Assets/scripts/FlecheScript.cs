@@ -4,7 +4,7 @@ using UnityEngine;
 
  public enum typearrow
 {
-    LINK,AGGREG,COMPO,ASSO,HERIT,UNDEF,SUPPR
+    LINK,AGGREG,COMPO,ASSO,HERIT,UNDEF,SUPPR,BPMN
 };
 public class FlecheScript : MonoBehaviour {
 
@@ -143,39 +143,52 @@ public class FlecheScript : MonoBehaviour {
                 if (newArrow.GetComponent<ArrowScript>().type == typearrow.AGGREG)
                 {
                     rend2.sprite = spr;
+                    //dep.GetComponent<NameBoxScript>().spr = spr;
+                    //arr.GetComponent<NameBoxScript>().spr = spr;
                 } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.ASSO)
                 {
                     rend2.color = Color.clear;
                 } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.COMPO)
                 {
                     rend2.sprite=spr;
+                    //dep.GetComponent<NameBoxScript>().spr = spr;
+                    //arr.GetComponent<NameBoxScript>().spr = spr;
                 } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.HERIT)
                 {
                     rend2.sprite=spr;
+                    //dep.GetComponent<NameBoxScript>().spr = spr;
+                    //arr.GetComponent<NameBoxScript>().spr = spr;
                 } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.LINK)
                 {
                     rend2.color = Color.clear;
+                } else if (newArrow.GetComponent<ArrowScript>().type == typearrow.BPMN)
+                {
+                    rend2.sprite = spr;
+                    //dep.GetComponent<NameBoxScript>().spr = spr;
+                    //arr.GetComponent<NameBoxScript>().spr = spr;
                 }
 
                     GameObject mid = newArrow.transform.Find("milieu").gameObject;
                 float x = (dep.transform.position.x + arr.transform.position.x) / 2;
                 float y = (dep.transform.position.y + arr.transform.position.y) / 2;
-                float z = (dep.transform.position.z + arr.transform.position.z) / 2;
-                mid.transform.position = new Vector3(x, y, z);
+                //float z = (dep.transform.position.z + arr.transform.position.z) / 2;
+                mid.transform.position = new Vector3(x, y, dep.transform.position.z);
                 SpriteRenderer rend3 = mid.gameObject.GetComponent<SpriteRenderer>();
 
                 GameObject line = newArrow.transform.Find("Line").gameObject;
                 LineRenderer l = line.GetComponent<LineRenderer>();
-                Vector3[] pos = { dep.transform.position+new Vector3(0,0,-5), arr.transform.position + new Vector3(0, 0, -5) };
+                Vector3[] pos = { dep.transform.position, arr.transform.position };
                 l.SetPositions(pos);
                 Renderer rend = line.GetComponent<Renderer>();
                 if (newArrow.GetComponent<ArrowScript>().type == typearrow.ASSO)
                 {
+                    rend.material.shader = Shader.Find("Unlit/Color");
                     rend.material.color = Color.red;
                 }
                 else
                 {
-                    //rend.material.color = Color.black;
+                    rend.material.shader = Shader.Find("Unlit/Color");
+                    rend.material.color = Color.black;
                 }
                 
 

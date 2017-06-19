@@ -5,8 +5,6 @@ using UnityEngine;
 public class NameBoxScript : BigBoxScript {
 
     bool isFree;
-   
-
     public string getName()
     {
         List<string> l = this.getListAsNameList();
